@@ -1,7 +1,8 @@
 package test;
 import java.io.*;
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
+import java.util.Date;
 
 public class test {
 	public static final String URL = "jdbc:oracle:thin:@20.121.23.59:1521:XE";
@@ -66,9 +67,11 @@ public class test {
 			
 			if(type == 1) sql = "SELECT * FROM PAPER p WHERE p.title like '%' || ? || '%'";
 			// SELECT * FROM PAPER p WHERE p.title like '%Bitcoin%';
-			else if(type == 2) sql = "SELECT * FROM AUTHOR a WHERE a.name like '%' || ? || '%'";
+			else if(type == 2) sql = "SELECT p.* FROM PAPER p, AUTHOR a, WRITE w WHERE a.name LIKE '%' || ? || "
+					+ "'%' AND p.doi = w.doi AND a.r_number = w.r_number";
 			// SELECT * FROM AUTHOR a WHERE a.name like '%Xu%';
-			else if(type == 3) sql = "SELECT * FROM KEYWORD k WHERE k.sub like '%' || ? || '%'";
+			else if(type == 3) sql = "SELECT p.* FROM PAPER p, KEYWORD k, HAS h"
+					+ " WHERE k.sub LIKE '%' || ? || '%' AND p.doi = h.doi AND k.k_id = h.k_id";
 			// SELECT * FROM KEYWORD k WHERE k.sub like '%modeling%';
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -76,50 +79,22 @@ public class test {
 //			System.out.print(name);
 			ps.setString(1, name);
 			
+			int itr = 0;
 			ResultSet rs = ps.executeQuery();
 			while(rs != null && rs.next())
 			{
-				switch(type)
-				{
-				case 1:
-					String title_ = rs.getString(1);
-					String summary_ = rs.getString(2);
-					String url_ = rs.getString(3);
-					int doi_ = rs.getInt(4);
-					int jnum_ = rs.getInt(5);
-					
-					System.out.println("\nTitle = " + title_);
-					System.out.println("Summary = " + summary_);
-					System.out.println("URL = " + url_);
-					System.out.println("DOI = " + doi_);
-					System.out.println("J_num = " + jnum_);
-					break;
-				case 2:
-					String name_ = rs.getString(1);
-					String inst_ = rs.getString(2);
-					String gender_ = rs.getString(3);
-					String nation_ = rs.getString(4);
-					String addr_ = rs.getString(5);
-					int rnum_ = rs.getInt(6);
-					
-					System.out.println("\nName = " + name_);
-					System.out.println("Institution = " + inst_);
-					System.out.println("Gender = " + gender_);
-					System.out.println("Nation = " + nation_);
-					System.out.println("Address = " + addr_);
-					System.out.println("R_num = " + rnum_);
-					break;
-				case 3:
-					String sub_ = rs.getString(1);
-					int kid_ = rs.getInt(2);
-					int ddc_ = rs.getInt(3);
-					
-					System.out.println("\nSub = " + sub_);
-					System.out.println("K_id = " + kid_);
-					System.out.println("DDC = " + ddc_);
-					break;
-				default:
-				}
+				String title_ = rs.getString(1);
+				String summary_ = rs.getString(2);
+				String url_ = rs.getString(3);
+				int doi_ = rs.getInt(4);
+				int jnum_ = rs.getInt(5);
+				
+				System.out.println("\n#" + String.valueOf(itr++));
+				System.out.println("Title = " + title_);
+				System.out.println("Summary = " + summary_);
+				System.out.println("URL = " + url_);
+				System.out.println("DOI = " + doi_);
+				System.out.println("J_num = " + jnum_);
 			}
 			
 			ps.close();
@@ -172,7 +147,7 @@ public class test {
 			System.out.println(rs.getString(1));
 			
 			// Author - Name
-			sql = "SELECT a.Name FROM AUTHOR a, WRITE w";
+			sql = "SELECT a.Name, a.r_number FROM AUTHOR a, WRITE w";
 			sql += " WHERE w.DOI = " + DOI;
 			sql += " AND a.R_number = w.R_number";
 			
@@ -180,7 +155,8 @@ public class test {
 			rs = stmt.executeQuery(sql);
 			while(rs.next()) {
 				String name = rs.getString(1);
-				System.out.print(name + "  ");
+				int rnumber = rs.getInt(2);
+				System.out.print(name + "("+rnumber + ")  ");
 			}
 			System.out.println("");
 			
@@ -311,10 +287,9 @@ public class test {
 			
 			// Author - Paper Count
 			// #3
-			sql = "SELECT COUNT(*) FROM PAPER p, AUTHOR a, WRITE w";
+			sql = "SELECT COUNT(*) FROM AUTHOR a, WRITE w";
 			sql += " WHERE a.r_number = " + Rnum;
-			sql += " AND p.doi = w.doi";
-			sql += " GROUP BY a.r_number";
+			sql += " AND a.r_number = w.r_number";
 			
 			rs = stmt.executeQuery(sql);
 			rs.next();
@@ -586,15 +561,23 @@ public class test {
 		System.out.println("==================================================");
 		System.out.println("Select Menu: \n");
 		System.out.println("1. Search Paper");
+		/*
 		System.out.println("2. BookMark Paper");
 		System.out.println("3. Show Paper Detail");
 		System.out.println("4. Show Author Detail");
+		*/
+		
 		System.out.println("5. Show Post All");
 		System.out.println("6. Show Post Detail");
+		
 		System.out.println("7. Show Book Mark");
+	
+		/*
 		System.out.println("8. Create Account");
 		System.out.println("9. Login Account");
 		System.out.println("10. Delete Account");
+		*/
+		System.out.println("11. Account");
 		System.out.println("--------------------------------------------------");
 		System.out.println("0. Exit\n");
 		
@@ -628,8 +611,28 @@ public class test {
 				String Pname = sc.nextLine();
 				
 				SearchPaper(type, Pname);
+				
+				System.out.print("\nEnter DOI: ");
+				int DOI_ = sc.nextInt();
+				ShowPaperDetail(DOI_);
+				
+				sc.nextLine(); // buffer
+				System.out.print("\nBook Mark? (y/n): ");
+				String chk_bm = sc.nextLine();
+				
+				// 좀따가 기능추가
+//				if(chk_bm.equals("y")) BookMarkPaper(ID, DOI);
+				
+				
+				System.out.print("\nEnter Rnum: ");
+				int RNUM2 = sc.nextInt();
+				
+				ShowAuthorDetail(RNUM2);
+				
+				// 나중에 분기문 체크
 				break;
 				
+				/*
 			case 2: // BookMark Paper
 				sc.nextLine(); // buffer
 				System.out.print("Enter UserID: ");
@@ -658,6 +661,7 @@ public class test {
 				
 				ShowAuthorDetail(RNUM);
 				break;
+				*/
 				
 			case 5: // Show post by category
 				System.out.print("Enter kind: ");
@@ -708,6 +712,41 @@ public class test {
 				String UserPW2 = sc.nextLine();
 				
 				DeleteAccount(UserID2, UserPW2);
+				break;
+				
+			case 11: // Account
+				int type2 = -1;
+				do {
+					System.out.println("");
+					System.out.println("1. Create Account");
+					System.out.println("2. Login Account");
+					System.out.println("3. Delete Account");
+					System.out.println("--------------------------------------------------");
+					System.out.println("0. Exit\n");
+					System.out.println("==================================================\n");
+					System.out.print("Enter Type: ");
+					type2 = sc.nextInt();
+					if(type2 == 0) break;
+					
+					sc.nextLine();
+					System.out.print("Enter UserID: ");
+					String UserID0 = sc.nextLine();
+					System.out.print("Enter UserPW: ");
+					String UserPW0 = sc.nextLine();
+					
+					switch(type2){
+						case 1: // Create
+							CreateAccount(UserID0, UserPW0);
+							break;
+						case 2: // Login
+							LoginAccount(UserID0, UserPW0);
+							break;
+						case 3: // Delete
+							DeleteAccount(UserID0, UserPW0);
+							break;
+					}
+					System.out.println("");
+				}while(type2 != 0);
 				break;
 				
 			default:
