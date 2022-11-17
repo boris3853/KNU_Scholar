@@ -20,6 +20,11 @@ public class test {
 	static String sql = ""; // an SQL statement 
 	static ResultSet rs = null; // result set object
 	
+	static int LoginState = 0;
+	static int LoopState = 0;
+	static String ID = "";
+	static String PW = "";
+	
 	public static void DBconnection()
 	{
 		try {
@@ -558,201 +563,139 @@ public class test {
 		
 		DBconnection();
 		
-		System.out.println("==================================================");
-		System.out.println("Select Menu: \n");
-		System.out.println("1. Search Paper");
-		/*
-		System.out.println("2. BookMark Paper");
-		System.out.println("3. Show Paper Detail");
-		System.out.println("4. Show Author Detail");
-		*/
-		
-		System.out.println("5. Show Post All");
-		System.out.println("6. Show Post Detail");
-		
-		System.out.println("7. Show Book Mark");
-	
-		/*
-		System.out.println("8. Create Account");
-		System.out.println("9. Login Account");
-		System.out.println("10. Delete Account");
-		*/
-		System.out.println("11. Account");
-		System.out.println("--------------------------------------------------");
-		System.out.println("0. Exit\n");
-		
-		System.out.println("==================================================");
-		System.out.print("Enter selection number > ");
-		op = sc.nextInt();
-		
-		System.out.println("\n==================================================");
-		
-		switch(op){
-			case 1: // Search Paper
-				System.out.println("Select Type: \n");
-				System.out.println("1. Title");
-				System.out.println("2. Author");
-				System.out.println("3. Keyword");
-				System.out.println("==================================================\n");
-				System.out.print("Enter Type: ");
-				int type = sc.nextInt();
-				switch(type){
-					case 1:
-							System.out.print("Enter Title Name: ");
-						break;
-					case 2:
-							System.out.print("Enter Author Name: ");
-						break;
-					case 3:
-							System.out.print("Enter Keyword Name: ");
-						break;
-				}
-				sc.nextLine(); // buffer
-				String Pname = sc.nextLine();
-				
-				SearchPaper(type, Pname);
-				
-				System.out.print("\nEnter DOI: ");
-				int DOI_ = sc.nextInt();
-				ShowPaperDetail(DOI_);
-				
-				sc.nextLine(); // buffer
-				System.out.print("\nBook Mark? (y/n): ");
-				String chk_bm = sc.nextLine();
-				
-				// 좀따가 기능추가
-//				if(chk_bm.equals("y")) BookMarkPaper(ID, DOI);
-				
-				
-				System.out.print("\nEnter Rnum: ");
-				int RNUM2 = sc.nextInt();
-				
-				ShowAuthorDetail(RNUM2);
-				
-				// 나중에 분기문 체크
-				break;
-				
-				/*
-			case 2: // BookMark Paper
-				sc.nextLine(); // buffer
-				System.out.print("Enter UserID: ");
-				String ID = sc.nextLine();
-				System.out.print("Enter DOI: ");
-				int DOI = sc.nextInt();
 
-//
-//				System.out.println(ID);
-//				System.out.println(DOI);
-				
-				BookMarkPaper(ID, DOI);
-				break;
-				
-			case 3: // Show Paper Detail
-				sc.nextLine(); // buffer
-				System.out.print("Enter DOI: ");
-				int DOI2 = sc.nextInt();
-				
-				ShowPaperDetail(DOI2);
-				
-			case 4:
-				sc.nextLine(); // buffer
-				System.out.print("Enter Rnum: ");
-				int RNUM = sc.nextInt();
-				
-				ShowAuthorDetail(RNUM);
-				break;
-				*/
-				
-			case 5: // Show post by category
-				System.out.print("Enter kind: ");
-				int KIND = sc.nextInt(); 
-				
-				ShowPostAll(KIND);
-				break;
-				
-			case 6: // Show Post Detail
-				System.out.print("Enter PID: ");
-				int PID = sc.nextInt(); 
-				
-				ShowPostDetail(PID);
-				break;
-				
-			case 7: // Show User BookMark
-				sc.nextLine();
-				System.out.print("Enter UserID: ");
-				String USERID4 = sc.nextLine();				
-				ShowBookMark(USERID4);
-				break;
-				
-			case 8: // Create Account
-				sc.nextLine();
-				System.out.print("Enter UserID: ");
-				String UserID3 = sc.nextLine();
-				System.out.print("Enter UserPW: ");
-				String UserPW3 = sc.nextLine();
-				
-				CreateAccount(UserID3, UserPW3);
-				break;
-				
-			case 9: // Login Account
-				sc.nextLine();
-				System.out.print("Enter UserID: ");
-				String UserID = sc.nextLine();
-				System.out.print("Enter UserPW: ");
-				String UserPW = sc.nextLine();
-				
-				LoginAccount(UserID, UserPW);
-				break;
+		while(LoopState == 0)
+		{
+			System.out.println("==================================================");
+			System.out.println("Select Menu: \n");
+			System.out.println("1. Show Paper");
+			System.out.println("2. Show Post");
+			System.out.println("3. Show BookMark");
+			System.out.println("4. Login");
+			System.out.println("--------------------------------------------------");
+			System.out.println("0. Exit\n");
 			
-			case 10: // Delete Account
-				sc.nextLine();
-				System.out.print("Enter UserID: ");
-				String UserID2 = sc.nextLine();
-				System.out.print("Enter UserPW: ");
-				String UserPW2 = sc.nextLine();
-				
-				DeleteAccount(UserID2, UserPW2);
-				break;
-				
-			case 11: // Account
-				int type2 = -1;
-				do {
-					System.out.println("");
-					System.out.println("1. Create Account");
-					System.out.println("2. Login Account");
-					System.out.println("3. Delete Account");
-					System.out.println("--------------------------------------------------");
-					System.out.println("0. Exit\n");
+			System.out.println("==================================================");
+			System.out.print("Enter selection number > ");
+			op = sc.nextInt();
+			
+			System.out.println("\n==================================================");
+			
+			switch(op){
+				case 1: // Show Paper
+					System.out.println("Select Type: \n");
+					System.out.println("1. Title");
+					System.out.println("2. Author");
+					System.out.println("3. Keyword");
 					System.out.println("==================================================\n");
 					System.out.print("Enter Type: ");
-					type2 = sc.nextInt();
-					if(type2 == 0) break;
-					
-					sc.nextLine();
-					System.out.print("Enter UserID: ");
-					String UserID0 = sc.nextLine();
-					System.out.print("Enter UserPW: ");
-					String UserPW0 = sc.nextLine();
-					
-					switch(type2){
-						case 1: // Create
-							CreateAccount(UserID0, UserPW0);
+					int type = sc.nextInt();
+					switch(type){
+						case 1:
+								System.out.print("Enter Title Name: ");
 							break;
-						case 2: // Login
-							LoginAccount(UserID0, UserPW0);
+						case 2:
+								System.out.print("Enter Author Name: ");
 							break;
-						case 3: // Delete
-							DeleteAccount(UserID0, UserPW0);
+						case 3:
+								System.out.print("Enter Keyword Name: ");
 							break;
 					}
+					
+					// Search Paper
+					sc.nextLine(); // buffer
+					String Pname = sc.nextLine();
+					SearchPaper(type, Pname);
+					
+					// Show Paper Detail
+					System.out.print("\nEnter DOI: ");
+					int DOI_ = sc.nextInt();
+					ShowPaperDetail(DOI_);
+					
+					// BookMark Paper
+					sc.nextLine(); // buffer
+					System.out.print("\nBook Mark? (y/n): ");
+					String chk_bm = sc.nextLine();
+					
+					// 좀따가 기능추가
+//					if(chk_bm.equals("y")) BookMarkPaper(ID, DOI);
+					
+					// Show Author Detail
+					System.out.print("\nEnter Rnum: ");
+					int RNUM2 = sc.nextInt();
+					ShowAuthorDetail(RNUM2);
+					
+					// 나중에 분기문 체크
+					break;
+					
+				case 2: // Show Post
 					System.out.println("");
-				}while(type2 != 0);
-				break;
+					System.out.println("1. 공지");
+					System.out.println("2. 커뮤니티");
+					System.out.println("3. Q & A");
+					System.out.println("==================================================\n");
+					
+					// Show post by category
+					System.out.print("Enter kind(num): ");
+					int KIND = sc.nextInt(); 
+					
+					ShowPostAll(KIND);
+					
+					// Show Post Detail
+					System.out.print("Enter P_NO: ");
+					int PID = sc.nextInt(); 
+					
+					ShowPostDetail(PID);
+					break;
+					
+				case 3: // Show User BookMark
+					sc.nextLine();
+					System.out.print("Enter UserID: ");
+					String USERID4 = sc.nextLine();				
+					ShowBookMark(USERID4);
+					break;
 				
-			default:
-				System.out.println("Bye");
-				System.exit(0);
+				case 4: // Account
+					int type2 = -1;
+					do {
+						System.out.println("");
+						System.out.println("1. Create Account");
+						System.out.println("2. Login Account");
+						System.out.println("3. Delete Account");
+						System.out.println("--------------------------------------------------");
+						System.out.println("0. Exit\n");
+						System.out.println("==================================================\n");
+						System.out.print("Enter Type: ");
+						type2 = sc.nextInt();
+						if(type2 == 0) break;
+						
+						sc.nextLine();
+						System.out.print("Enter UserID: ");
+						String UserID0 = sc.nextLine();
+						System.out.print("Enter UserPW: ");
+						String UserPW0 = sc.nextLine();
+						
+						switch(type2){
+							case 1: // Create Account
+								CreateAccount(UserID0, UserPW0);
+								break;
+							case 2: // Login Account
+								LoginAccount(UserID0, UserPW0);
+								break;
+							case 3: // Delete Account
+								DeleteAccount(UserID0, UserPW0);
+								break;
+						}
+						System.out.println("");
+					}while(type2 != 0);
+					break;
+					
+				default:
+					System.out.println("Bye");
+					LoopState = -1;
+			}
 		}
+		
 		
 		sc.close();
 		DBrelease();
