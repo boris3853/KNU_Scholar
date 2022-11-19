@@ -63,6 +63,11 @@ public class test {
 		}
 	}
 	
+	public static void PrintUser()
+	{
+		if(LoginState == 1) System.out.println("Login as " + ID);
+	}
+	
 	
 	// 1
 	public static void SearchPaper(int type, String name)
@@ -130,11 +135,7 @@ public class test {
 		}catch(SQLException ex2) {
 			System.err.println("sql error = " + ex2.getMessage());
 			System.exit(1);
-		}
-		
-		System.out.println(UserID);
-		System.out.println(DOI);
-		
+		}		
 	}
 	
 	// 3
@@ -444,7 +445,7 @@ public class test {
 				
 				while(rs.next()) {
 				    String sub = rs.getString(1);
-				    System.out.print(sub + "  ");
+				    System.out.print("-" + sub + "  ");
 				}
 				System.out.println("");
 				
@@ -458,7 +459,7 @@ public class test {
 				
 				while(rs.next()) {
 				    String author = rs.getString(1);
-				    System.out.print(author + "  ");
+				    System.out.print("-" + author + "  ");
 				}
 				System.out.println("");
 				
@@ -472,7 +473,7 @@ public class test {
 				
 				while(rs.next()) {
 				    String title = rs.getString(1);
-				    System.out.println(title);
+				    System.out.println("-" + title);
 				}
 				System.out.println("");
 				
@@ -501,7 +502,6 @@ public class test {
 	}
 	
 	// 9
-//	public static int LoginAccount(String UserID, String UserPW)
 	public static void LoginAccount(String UserID, String UserPW)
 	{
 		// 1: success 0: fail
@@ -529,10 +529,13 @@ public class test {
 			System.exit(1);
 		}
 		
-		if(ret == 1) System.out.println("Account available");
-		else System.out.println("No Account");
-//		return ret;
 		
+		if(ret == 1) {
+			LoginState = 1;
+			ID = UserID;
+			System.out.println("Account => " + ID);
+		}
+		else System.out.println("No Account");
 	}
 	
 	// 10
@@ -567,10 +570,11 @@ public class test {
 		while(LoopState == 0)
 		{
 			System.out.println("==================================================");
+			if(LoginState == 1) System.out.println("Login as \"" + ID + "\"");
 			System.out.println("Select Menu: \n");
 			System.out.println("1. Show Paper");
 			System.out.println("2. Show Post");
-			System.out.println("3. Show BookMark");
+			if(LoginState == 1) System.out.println("3. Show BookMark");
 			System.out.println("4. Login");
 			System.out.println("--------------------------------------------------");
 			System.out.println("0. Exit\n");
@@ -592,13 +596,13 @@ public class test {
 					int type = sc.nextInt();
 					switch(type){
 						case 1:
-								System.out.print("Enter Title Name: ");
+							System.out.print("Enter Title Name: ");
 							break;
 						case 2:
-								System.out.print("Enter Author Name: ");
+							System.out.print("Enter Author Name: ");
 							break;
 						case 3:
-								System.out.print("Enter Keyword Name: ");
+							System.out.print("Enter Keyword Name: ");
 							break;
 					}
 					
@@ -612,13 +616,16 @@ public class test {
 					int DOI_ = sc.nextInt();
 					ShowPaperDetail(DOI_);
 					
-					// BookMark Paper
-					sc.nextLine(); // buffer
-					System.out.print("\nBook Mark? (y/n): ");
-					String chk_bm = sc.nextLine();
-					
-					// 좀따가 기능추가
-//					if(chk_bm.equals("y")) BookMarkPaper(ID, DOI);
+					if(LoginState == 1)
+					{
+						// BookMark Paper
+						sc.nextLine(); // buffer
+						System.out.print("\nBook Mark? (y/n): ");
+						String chk_bm = sc.nextLine();
+						
+						// 좀따가 기능추가
+						if(chk_bm.equals("y")) BookMarkPaper(ID, DOI_);
+					}
 					
 					// Show Author Detail
 					System.out.print("\nEnter Rnum: ");
@@ -649,17 +656,19 @@ public class test {
 					break;
 					
 				case 3: // Show User BookMark
-					sc.nextLine();
-					System.out.print("Enter UserID: ");
-					String USERID4 = sc.nextLine();				
-					ShowBookMark(USERID4);
+					if(LoginState != 1)
+					{
+						System.out.println("Unauthorized Access");
+						break;
+					}
+					
+					ShowBookMark(ID);
 					break;
 				
 				case 4: // Account
 					int type2 = -1;
 					do {
-						System.out.println("");
-						System.out.println("1. Create Account");
+						System.out.println("\n1. Create Account");
 						System.out.println("2. Login Account");
 						System.out.println("3. Delete Account");
 						System.out.println("--------------------------------------------------");
