@@ -572,7 +572,7 @@ public class test {
 			System.out.println("==================================================");
 			if(LoginState == 1) System.out.println("Login as \"" + ID + "\"");
 			System.out.println("Select Menu: \n");
-			System.out.println("1. Show Paper");
+			System.out.println("1. Search Paper");
 			System.out.println("2. Show Post");
 			if(LoginState == 1) System.out.println("3. Show BookMark");
 			System.out.println("4. Login");
