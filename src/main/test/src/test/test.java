@@ -339,7 +339,7 @@ public class test {
     }
 	
 	// 5
-	public static void ShowPostAll(int kind) { 
+	public static void ShowPostAll(int kind) {
 		try {
 			String sql = "select p_no, title, date_time from post where category = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -347,6 +347,7 @@ public class test {
 			if(kind == 1) ps.setString(1, "ANN"); // 공지
 			else if(kind == 2) ps.setString(1, "GNL"); // 커뮤니티
 			else if(kind == 3) ps.setString(1, "QNA"); // qna 
+			
 			rs = ps.executeQuery();
 			
 			System.out.println(String.format("%5s | %-50s\t | DATE ", "P_NO", "TITLE"));
@@ -741,6 +742,14 @@ public class test {
 							sc = new Scanner(System.in);
 						}
 					}
+					
+					// KIND 예외 처리
+					if(KIND < 1 || KIND > 3)
+					{
+						System.out.println("1(공지) / 2(커뮤니티) / 3(qna)만 선택가능합니다.");
+						break;
+					}
+					
 					ShowPostAll(KIND);
 					
 					// Show Post Detail
