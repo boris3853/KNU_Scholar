@@ -487,18 +487,53 @@ public class test {
 	public static void CreateAccount(String UserId, String UserPW) {
 		// CreateAccount(String UserId, String UserPW) - 계정 생성, insert, id 중복 검사, 성공시 '계정 생성 성공' 출력
 		int rs = 0;
-		try {
-			String sql = "INSERT INTO ACCOUNT(ID, Passwd, Kind) VALUES(?,?,'U')";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, UserId);
-			ps.setString(2, UserPW);
-			rs = ps.executeUpdate();
-			ps.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		
+		if(FindAccount(UserId) == false)
+		{
+			try {
+				String sql = "INSERT INTO ACCOUNT(ID, Passwd, Kind) VALUES(?,?,'U')";
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setString(1, UserId);
+				ps.setString(2, UserPW);
+				rs = ps.executeUpdate();
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if(rs == 1) System.out.println("계정 생성 성공");
+			else System.out.println("계정 생성 실패");
+		}else {
+			System.out.println("계정이 이미 존재합니다.");
 		}
-		if(rs == 1) System.out.println("계정 생성 성공");
-		else System.out.println("계정 생성 실패"); 
+		 
+	}
+	
+	public static boolean FindAccount(String UserID)
+	{
+		int ret = 0;
+		try {
+			conn.setAutoCommit(false);
+			
+			sql = "SELECT COUNT(*) as EXIST FROM ACCOUNT ac WHERE ac.id = ?";
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, UserID);
+			
+			ResultSet rs = ps.executeQuery();
+		
+			while(rs != null && rs.next())
+				ret = rs.getInt(1);
+				
+			ps.close();
+			rs.close();
+			conn.commit();
+		}catch(SQLException ex2) {
+			System.err.println("sql error = " + ex2.getMessage());
+			System.exit(1);
+		}
+			
+		if(ret == 1) return true;
+		else return false;
 	}
 	
 	// 9
