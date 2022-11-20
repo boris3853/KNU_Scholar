@@ -203,7 +203,7 @@ public class test {
 			sql += " AND h.k_id = k.k_id";
 			
 			rs = stmt.executeQuery(sql);
-			while(rs.next()) {
+			while(rs.next()) {	
 				String sub = rs.getString(1);
 				System.out.print(sub + "  ");
 			}
@@ -529,7 +529,6 @@ public class test {
 			System.exit(1);
 		}
 		
-		
 		if(ret == 1) {
 			LoginState = 1;
 			ID = UserID;
@@ -581,9 +580,21 @@ public class test {
 			
 			System.out.println("==================================================");
 			System.out.print("Enter selection number > ");
-			op = sc.nextInt();
 			
-			System.out.println("\n==================================================");
+			while(true)
+			{
+				try {
+					op = sc.nextInt();
+					break;
+				}catch(InputMismatchException e) {
+					System.out.println("정수만 입력해주세요.");
+					System.out.print("Enter selection number > ");
+					sc = new Scanner(System.in);
+				}
+			}
+			
+			
+			System.out.println("==================================================");
 			
 			switch(op){
 				case 1: // Show Paper
@@ -593,7 +604,20 @@ public class test {
 					System.out.println("3. Keyword");
 					System.out.println("==================================================\n");
 					System.out.print("Enter Type: ");
-					int type = sc.nextInt();
+					
+					int type;
+					while(true)
+					{
+						try {
+							type = sc.nextInt();
+							break;
+						}catch(InputMismatchException e) {
+							System.out.println("정수만 입력해주세요.");
+							System.out.print("Enter selection number > ");
+							sc = new Scanner(System.in);
+						}
+					}
+					
 					switch(type){
 						case 1:
 							System.out.print("Enter Title Name: ");
@@ -613,7 +637,20 @@ public class test {
 					
 					// Show Paper Detail
 					System.out.print("\nEnter DOI: ");
-					int DOI_ = sc.nextInt();
+					
+					int DOI_;
+					while(true)
+					{
+						try {
+							DOI_ = sc.nextInt();
+							break;
+						}catch(InputMismatchException e) {
+							System.out.println("정수만 입력해주세요.");
+							System.out.print("Enter selection number > ");
+							sc = new Scanner(System.in);
+						}
+					}
+					
 					ShowPaperDetail(DOI_);
 					
 					if(LoginState == 1)
@@ -629,7 +666,19 @@ public class test {
 					
 					// Show Author Detail
 					System.out.print("\nEnter Rnum: ");
-					int RNUM2 = sc.nextInt();
+					
+					int RNUM2;
+					while(true)
+					{
+						try {
+							RNUM2 = sc.nextInt();
+							break;
+						}catch(InputMismatchException e) {
+							System.out.println("정수만 입력해주세요.");
+							System.out.print("Enter selection number > ");
+							sc = new Scanner(System.in);
+						}
+					}
 					ShowAuthorDetail(RNUM2);
 					
 					// 나중에 분기문 체크
@@ -644,13 +693,36 @@ public class test {
 					
 					// Show post by category
 					System.out.print("Enter kind(num): ");
-					int KIND = sc.nextInt(); 
 					
+					int KIND; 
+					while(true)
+					{
+						try {
+							KIND = sc.nextInt();
+							break;
+						}catch(InputMismatchException e) {
+							System.out.println("정수만 입력해주세요.");
+							System.out.print("Enter selection number > ");
+							sc = new Scanner(System.in);
+						}
+					}
 					ShowPostAll(KIND);
 					
 					// Show Post Detail
 					System.out.print("Enter P_NO: ");
-					int PID = sc.nextInt(); 
+					
+					int PID; 
+					while(true)
+					{
+						try {
+							PID = sc.nextInt();
+							break;
+						}catch(InputMismatchException e) {
+							System.out.println("정수만 입력해주세요.");
+							System.out.print("Enter selection number > ");
+							sc = new Scanner(System.in);
+						}
+					}
 					
 					ShowPostDetail(PID);
 					break;
@@ -673,9 +745,21 @@ public class test {
 						System.out.println("3. Delete Account");
 						System.out.println("--------------------------------------------------");
 						System.out.println("0. Exit\n");
-						System.out.println("==================================================\n");
+						System.out.println("==================================================");
 						System.out.print("Enter Type: ");
-						type2 = sc.nextInt();
+						
+						while(true)
+						{
+							try {
+								type2 = sc.nextInt();
+								break;
+							}catch(InputMismatchException e) {
+								System.out.println("정수만 입력해주세요.");
+								System.out.print("Enter selection number > ");
+								sc = new Scanner(System.in);
+							}
+						}
+						
 						if(type2 == 0) break;
 						
 						sc.nextLine();
