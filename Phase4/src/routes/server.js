@@ -2,7 +2,7 @@ var oracledb = require('oracledb');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
-var router = require('./routes/router');
+var router = require('./router');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
