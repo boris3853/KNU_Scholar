@@ -1,3 +1,4 @@
+var oracledb = require('oracledb');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
@@ -11,5 +12,5 @@ var PORT = process.env.PORT || 8000;
 
 // listen 8000 port
 app.listen(PORT, () =>{
-    console.log('Server is running on port ${PORT}.');
+    console.log(`Server is running on port ${PORT}.`);
 });
