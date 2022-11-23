@@ -1,10 +1,11 @@
-package test;
+package kkk;
+
 import java.io.*;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
-public class test {
+public class KKK_PHASE3 {
 	public static final String URL = "jdbc:oracle:thin:@20.121.23.59:1521:XE";
 	public static final String USER ="system";
 	public static final String PASSWD ="kkk12345";
