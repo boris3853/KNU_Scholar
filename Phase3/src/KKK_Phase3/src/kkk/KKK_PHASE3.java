@@ -122,10 +122,20 @@ public class KKK_PHASE3 {
 	{
 		try {
 			conn.setAutoCommit(false);
+			sql = "SELECT * FROM P_BOOKMARK WHERE ID = ? AND DOI = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, UserID);
+			ps.setInt(2, DOI);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				System.out.println("이미 북마크된 논문입니다.");
+				return;
+			}
+			
 			sql = "INSERT INTO P_BOOKMARK(ID, DOI) VALUES(?, ?)";
 //			INSERT INTO P_BOOKMARK(ID, DOI) VALUES('test', 111);
 			
-			PreparedStatement ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(sql);
 			ps.setString(1, UserID);
 			ps.setInt(2, DOI);
 			
@@ -150,7 +160,10 @@ public class KKK_PHASE3 {
 			System.out.println("");
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
-			rs.next();
+			if(!rs.next()) {
+				System.out.println("존재하지 않는 논문입니다.");
+				return;
+			}
 			System.out.println(rs.getString(1));
 			
 			// Author - Name
@@ -191,7 +204,6 @@ public class KKK_PHASE3 {
 			
             
 			// Keyword - Sub
-			// 갯수까지 확인 할 수 있도록 쿼리 짜봤는데, 되는지 확인 못해봤어요.
 			// #12, #16
 			sql = "SELECT COUNT(*) FROM HAS h";
 			sql += " WHERE h.doi = " + DOI;
@@ -255,6 +267,20 @@ public class KKK_PHASE3 {
 				System.out.println(name);
 			}
 			System.out.println("");
+			
+
+			if(LoginState == 1)
+			{
+				// BookMark Paper
+				Scanner sc = new Scanner(System.in);
+				//sc.nextLine(); // buffer
+				System.out.print("\nBook Mark? (y/n): ");
+				String chk_bm = sc.nextLine();
+				
+				// 좀따가 기능추가
+				if(chk_bm.equals("y")) BookMarkPaper(ID, DOI);
+			}
+			
 					
 		}catch(SQLException ex2) {
 			System.err.println("sql error = " + ex2.getMessage());
@@ -273,7 +299,10 @@ public class KKK_PHASE3 {
 			
 			System.out.println("");
 			rs = stmt.executeQuery(sql);
-			rs.next();
+			if(!rs.next()) {
+				System.out.println("존재하지 않는 저자입니다.");
+				return;
+			}
 			System.out.println(rs.getString(1) + "( " + rs.getString(2) + ", " + rs.getString(3) + " )");
 			System.out.println(rs.getString(4));
 			System.out.println("Address : " + rs.getString(5));
@@ -578,17 +607,25 @@ public class KKK_PHASE3 {
 	public static void DeleteAccount(String UserId, String UserPW) { // 10
 		// DeleteAccount(String UserId, String UserPW) - 계정 탈퇴, ID/PW 일치하면 삭제 , '삭제 완료' 출력
 		int rs = 0;
-		try {
+		if(!ID.equals(UserId)) {
+			System.out.println("잘못된 아이디입니다. 현재 로그인한 계정만 삭제할 수 있습니다.");
+			return;
+		}
+		try {			
 			String sql = "DELETE FROM ACCOUNT WHERE ID = ? AND Passwd = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, UserId);
 			ps.setString(2, UserPW);
 			rs = ps.executeUpdate();
+			System.out.println("????");
 			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if(rs == 1) System.out.println("계정 삭제 성공");
+		if(rs == 1) {
+			System.out.println("계정 삭제 성공");
+			LoginState = 0;
+		}
 		else System.out.println("계정 삭제 실패");
 	}
 	
@@ -690,17 +727,6 @@ public class KKK_PHASE3 {
 					
 					ShowPaperDetail(DOI_);
 					
-					if(LoginState == 1)
-					{
-						// BookMark Paper
-						sc.nextLine(); // buffer
-						System.out.print("\nBook Mark? (y/n): ");
-						String chk_bm = sc.nextLine();
-						
-						// 좀따가 기능추가
-						if(chk_bm.equals("y")) BookMarkPaper(ID, DOI_);
-					}
-					
 					// Show Author Detail
 					System.out.print("\nEnter Rnum: ");
 					
@@ -787,7 +813,8 @@ public class KKK_PHASE3 {
 					do {
 						System.out.println("\n1. Create Account");
 						System.out.println("2. Login Account");
-						System.out.println("3. Delete Account");
+						if(LoginState!=0)
+							System.out.println("3. Delete Account");
 						System.out.println("--------------------------------------------------");
 						System.out.println("0. Exit\n");
 						System.out.println("==================================================");
