@@ -617,7 +617,6 @@ public class KKK_PHASE3 {
 			ps.setString(1, UserId);
 			ps.setString(2, UserPW);
 			rs = ps.executeUpdate();
-			System.out.println("????");
 			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
