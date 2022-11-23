@@ -1,0 +1,8 @@
+window에서 가상환경 설정하기
+
+>> py -3 -m venv webp
+>> cd webp
+>> cd Scripts
+>> activate
+
+// pip flask 다 할 것
