@@ -278,6 +278,13 @@ app.get("/Search", (req, res) => {
     else res.render(__dirname + '/views/search1', {id: MainID});
 });
 
+app.post("/Search", (req, res) => {
+    var sel_list = req.body.SEL;
+    var content = req.body.CONTENT;
+
+    console.log(sel_list + " " + content);
+});
+
 
 //////////////////////////////////////////////////////////
 

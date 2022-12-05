@@ -58,19 +58,19 @@
 </body>
 <h1>논문 검색</h1>
 <div class="container">
-<div class="col-md-5"><!--class="col-md-5"-->
-  <!--
-			  <label for="country" class="form-label">논문 검색</label>
-              -->
-  <select class="form-select" id="SEL" required>
-    <option value="">선택</option>
-    <option>논문 제목</option>
-    <option>저자 이름</option>
-    <option>키워드
-    </option>
-  </select>
-  <input type="text" class="form-control" placeholder="검색 내용">
-  <button type="submit" class="btn btn-secondary">검색</button>
+<div class="col-md-5">
+  <form method="post" id="SearchSEL">
+    <select class="form-select" name="SEL" required>
+      <option value="">선택</option>
+      <option>논문 제목</option>
+      <option>저자 이름</option>
+      <option>키워드
+      </option>
+    </select>
+    <input type="text" class="form-control" placeholder="검색 내용">
+    <button type="submit" class="btn btn-secondary" form="SearchSEL"
+    onclick="javascript: form.action='/Search'">검색</button>
+  </form>
 </div>
 
 <div class="list-group">
