@@ -251,9 +251,9 @@ app.post('/Login/Logout', async (req, res) => {
 
 app.get("/About", (req, res) => {
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    // if(!LoginState) res.render(__dirname + '/views/Aoubt', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/about', {id: "Anonymous"});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    // else res.render(__dirname + '/views/About', {id: MainID});
+    else res.render(__dirname + '/views/about', {id: MainID});
 });
 
 
@@ -289,6 +289,20 @@ app.get("/Article/Notice", (req, res) => {
     else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
 });
 
+
+app.get("/Article/Free", (req, res) => {
+    // 비로그인 상태면 bookmark1_NL.ejs 화면
+    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous"});
+    // 로그인 상태면 bookmark1_L.ejs 화면
+    else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
+});
+
+app.get("/Article/QNA", (req, res) => {
+    // 비로그인 상태면 bookmark1_NL.ejs 화면
+    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous"});
+    // 로그인 상태면 bookmark1_L.ejs 화면
+    else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
+});
 
 //////////////////////////////////////////////////////////
 
