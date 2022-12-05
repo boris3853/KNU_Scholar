@@ -75,26 +75,28 @@
 </nav>
   
   <main class="form-signin w-100 m-auto">
-    <form method="post" id="MainLogin">
-      <h1 class="h3 mb-3 fw-normal c">로그인</h1>
-      <div class="form-floating">
-        <!-- type을 email로 해놓으면 아이디가 name@example.com으로 제한되어버려서 바꿨음 --> 
-        <input type="text" class="form-control" id="floatingInput" name="MainLoginID" placeholder="name@example.com">
-        <label for="floatingInput">ID</label>
-      </div>
-      <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" name="MainLoginPW" placeholder="Password">
-        <label for="floatingPassword">Password</label>
-      </div>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="w-50 btn btn-lg btn-primary" type="submit" id="btn_SU" form="MainLogin"
-          onclick="javascript: form.action='/Login/SU'">회원가입</button>
-        <button class="w-50 btn btn-lg btn-primary" type="submit" id="btn_SI" form="MainLogin"
-          onclick="javascript: form.action='/Login/REQ'">로그인</button>
-        <!-- <input class="w-50 btn btn-lg btn-primary" type="button" value="로그인"> -->
-      </div>
-      <p class="mt-5 mb-3 text-muted">&copy; 2022–2023</p>
-    </form>
+    <div class="loginbox">
+      <form method="post" id="MainLogin">
+        <h1 class="h3 mb-3 fw-normal c">로그인</h1>
+        <div class="form-floating">
+          <!-- type을 email로 해놓으면 아이디가 name@example.com으로 제한되어버려서 바꿨음 --> 
+          <input type="text" class="form-control" id="floatingInput" name="MainLoginID" placeholder="name@example.com">
+          <label for="floatingInput">ID</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="floatingPassword" name="MainLoginPW" placeholder="Password">
+          <label for="floatingPassword">Password</label>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button class="w-50 btn btn-lg btn-primary" type="submit" id="btn_SU" form="MainLogin"
+            onclick="javascript: form.action='/Login/SU'">회원가입</button>
+          <button class="w-50 btn btn-lg btn-primary" type="submit" id="btn_SI" form="MainLogin"
+            onclick="javascript: form.action='/Login/REQ'">로그인</button>
+          <!-- <input class="w-50 btn btn-lg btn-primary" type="button" value="로그인"> -->
+        </div>
+        <p class="mt-5 mb-3 text-muted">&copy; 2022–2023</p>
+      </form>
+    </div>
   </main>
 
 

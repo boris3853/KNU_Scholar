@@ -75,22 +75,23 @@
 </nav>
   
   <main class="form-signin w-100 m-auto">
-  
-  <form method="post" id="MainSignUP">
-    <h1 class="h3 mb-3 fw-normal">회원 가입</h1>
-    <div class="form-floating">
-      <!-- type을 email로 해놓으면 아이디가 name@example.com으로 제한되어버려서 바꿨음 --> 
-      <input type="text" class="form-control" id="floatingInput" name="SULoginID" placeholder="name@example.com">
-      <label for="floatingInput">ID</label>
+    <div class="loginbox">
+      <form class="loginbox" method="post" id="MainSignUP">
+        <h1 class="h3 mb-3 fw-normal">회원 가입</h1>
+        <div class="form-floating">
+          <!-- type을 email로 해놓으면 아이디가 name@example.com으로 제한되어버려서 바꿨음 --> 
+          <input type="text" class="form-control" id="floatingInput" name="SULoginID" placeholder="name@example.com">
+          <label for="floatingInput">ID</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="floatingPassword" name="SULoginPW" placeholder="Password">
+          <label for="floatingPassword">Password</label>
+        </div>
+      
+        <button class="w-100 btn btn-lg btn-primary" type="submit" onclick="javascript: form.action='/Login/FromSU'">가입</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2022–2023</p>
+      </form>
     </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" name="SULoginPW" placeholder="Password">
-      <label for="floatingPassword">Password</label>
-    </div>
-	
-    <button class="w-100 btn btn-lg btn-primary" type="submit" onclick="javascript: form.action='/Login/FromSU'">가입</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2022–2023</p>
-  </form>
 </main>
 
 
