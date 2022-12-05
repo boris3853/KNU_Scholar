@@ -246,6 +246,16 @@ app.post('/Login/Logout', async (req, res) => {
 });
 
 
+//////////////////////////////////////////////////////////
+
+
+app.get("/About", (req, res) => {
+    // 비로그인 상태면 bookmark1_NL.ejs 화면
+    // if(!LoginState) res.render(__dirname + '/views/Aoubt', {id: "Anonymous"});
+    // 로그인 상태면 bookmark1_L.ejs 화면
+    // else res.render(__dirname + '/views/About', {id: MainID});
+});
+
 
 //////////////////////////////////////////////////////////
 
@@ -266,6 +276,17 @@ app.get("/Search", (req, res) => {
     if(!LoginState) res.render(__dirname + '/views/search1', {id: "Anonymous"});
     // 로그인 상태면 search1.ejs 화면 => MainID
     else res.render(__dirname + '/views/search1', {id: MainID});
+});
+
+
+//////////////////////////////////////////////////////////
+
+
+app.get("/Article/Notice", (req, res) => {
+    // 비로그인 상태면 bookmark1_NL.ejs 화면
+    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous"});
+    // 로그인 상태면 bookmark1_L.ejs 화면
+    else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
 });
 
 
@@ -302,12 +323,6 @@ app.get("/PaperAdd/Keyword", (req, res) => {
     else res.render(__dirname + '/views/paper_add_K', {id: MainID});
 });
 
-app.get("/PaperAdd/Journal", (req, res) => {
-    // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
-    // 로그인 상태면 paper_add_J.ejs
-    else res.render(__dirname + '/views/paper_add_J', {id: MainID});
-});
 
 
 // listen 8000 port
