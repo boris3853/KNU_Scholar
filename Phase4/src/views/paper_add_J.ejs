@@ -49,21 +49,26 @@
           </li>    
         </ul>
       </div>
-      <h1 class="d-flex align-items-center fs-4 text-white mb-0">
-        <%= id %>
-      </h1>
     </div>
   </nav>
 
-	<p class="h1">Keyword</p>
+	<p class="h1">Journal</p>
 	<div class="mb-3">
-            <label for="InputEmailAddress" class="form-label">Email Address</label>
-            <input type="text" class="form-control" id="InputEmailAddress">
+            <label for="InputName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="InputName">
     </div>
 	<div class="mb-3">
-            <label for="InputPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="InputPassword">
-          </div>
+            <label for="InputVol" class="form-label">Vol</label>
+            <input type="text" class="form-control" id="InputVol">
+    </div>
+	<div class="mb-3">
+            <label for="InputIssue" class="form-label">Issue</label>
+            <input type="text" class="form-control" id="InputIssue">
+    </div>
+	<div class="mb-3">
+            <label for="InputPublish" class="form-label">Publisher</label>
+            <input type="text" class="form-control" id="InputPublish">
+    </div>
 	<div class="mb-3">
             <label for="DDCSelect" class="form-label">DDC</label>
             <select class="form-select" id="DDCSelect">
@@ -79,6 +84,15 @@
 			  <option value="9">900</option>
             </select>
     </div>
+	<div class="mb-3">
+		<label for="InputJnumber" class="form-label">Jnumber</label>
+		<input type="text" class="form-control" id="InputJnumber">
+    </div>
+	<div class="mb-3">
+		<label for="InputYear" class="form-label">Year</label>
+		<input type="text" class="form-control" id="InputYear">
+    </div>
+	
 	<button type="submit" class="btn btn-primary">저장</button>
 
 	<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->

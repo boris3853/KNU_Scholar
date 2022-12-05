@@ -269,6 +269,46 @@ app.get("/Search", (req, res) => {
 });
 
 
+//////////////////////////////////////////////////////////
+
+
+app.get("/PaperAdd/Author", (req, res) => {
+    // 비로그인 상태면 paper_add_UATH
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    // 로그인 상태면 paper_add_A.ejs
+    else res.render(__dirname + '/views/paper_add_A', {id: MainID});
+});
+
+app.get("/PaperAdd/Journal", (req, res) => {
+    // 비로그인 상태면 paper_add_UATH
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    // 로그인 상태면 paper_add_J.ejs
+    else res.render(__dirname + '/views/paper_add_J', {id: MainID});
+});
+
+
+app.get("/PaperAdd/Paper", (req, res) => {
+    // 비로그인 상태면 paper_add_UATH
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    // 로그인 상태면 paper_add_P.ejs
+    else res.render(__dirname + '/views/paper_add_P', {id: MainID});
+});
+
+
+app.get("/PaperAdd/Keyword", (req, res) => {
+    // 비로그인 상태면 paper_add_UATH
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    // 로그인 상태면 paper_add_K.ejs
+    else res.render(__dirname + '/views/paper_add_K', {id: MainID});
+});
+
+app.get("/PaperAdd/Journal", (req, res) => {
+    // 비로그인 상태면 paper_add_UATH
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    // 로그인 상태면 paper_add_J.ejs
+    else res.render(__dirname + '/views/paper_add_J', {id: MainID});
+});
+
 
 // listen 8000 port
 app.listen(PORT, () =>{
