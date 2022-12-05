@@ -1,0 +1,50 @@
+.contents{
+    margin-left: 30px;
+    margin-top: 10px;
+}
+hr{
+    width: 50%;
+}
+.mb-3{
+    /* 추가 항목들 전체 (각각으로 나뉨) */
+    margin-top : 10px;
+}
+.h1{
+    /* Author 제목 */
+
+}
+label{
+    /* 추가하는 항목들 이름 */
+
+}
+.form-control{
+    /* 추가하는 텍스트 박스 */
+    width:80%;
+    padding-left: 30px;
+}
+.form-select{
+    /* major 선택 창 */
+    width:auto;
+}
+.form-check{
+    /* male/female 선택하는 창 */
+    
+}
+.chang{
+    /* 찾기 버튼이 있는 텍스트 창 */
+    float:left;
+    width: 30%;
+}
+.btn-search{
+    /* 찾기 버튼 */
+    margin-left: 10px;
+    width: 70px;
+    background-color: black;
+    border-radius: 0;
+    border-color: transparent;
+}
+.noAuth{
+    /* 권한이 없습니다. */
+    text-align: center;
+    margin-top: 30px;
+}
