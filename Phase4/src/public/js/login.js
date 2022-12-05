@@ -1,7 +1,26 @@
-var button = document.getElementById('btn_SI');
-button.onclick = function() {
-  location.assign('https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click/');
-}
+// $('.login button').click(function () {
+//   location.assign('https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click/');
+// });
+
+// $('.login submit').click(function () {
+//   location.assign('https://www.google.com/search?q=jquery+cdn&oq=jquery+cdn&aqs=chrome..69i57.3194j0j7&sourceid=chrome&ie=UTF-8');
+// });
+
+// var button = document.getElementById("btn_SI");
+// button.onclick = function() {
+//   location.assign('https://stackoverflow.com/questions/52229901/navigate-to-route-on-button-click/');
+// }
+
+// const button3 = document.getElementById('btn_SI');
+// button3.addEventListener('click', function(e) {
+//   alert(this.textContent);
+// });
+
+// const buttonEl = document.querySelector("btn_SI");
+// buttonEl.onclick = function (event) {
+//   alert(this.textContent);
+//   alert(event.target.textContent);
+// };
 
 // const btn_SU = document.getElementById('btn_SU');
 // const btn_SI = document.getElementById('btn_SI');
