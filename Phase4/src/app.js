@@ -280,7 +280,7 @@ app.get("/Search", (req, res) => {
 
 app.post("/Search", (req, res) => {
     var sel_list = req.body.SEL;
-    var content = req.body.CONTENT;
+    var content = req.body.CONT;
 
     console.log(sel_list + " " + content);
 });
@@ -310,6 +310,8 @@ app.get("/Article/QNA", (req, res) => {
     // 로그인 상태면 bookmark1_L.ejs 화면
     else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
 });
+
+
 
 //////////////////////////////////////////////////////////
 
@@ -355,6 +357,10 @@ app.listen(PORT, () =>{
 
 
 
+//test
+app.get("/Post", (req, res) => {
+    res.render(__dirname + '/views/bookmark1_L', {id: MainID});
+});
 
 
 
