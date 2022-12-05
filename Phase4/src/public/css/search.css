@@ -1,4 +1,4 @@
-.col-md-5 {
+.c {
     text-align: center;
     display: inline-block;
     width: 100%;
@@ -22,4 +22,24 @@
 h1 {
     margin-top: 10px;
     padding-left: 10px;
+}
+
+.row_name {
+    font-weight: bold;
+}
+
+.detail {
+    margin-top:30px;
+}
+.detail_title {
+    display: inline;
+}
+
+.sum_content {
+    padding: 10px 10px 10px 10px;
+}
+
+.bm_btn {
+    margin-top: 5px;
+    float: right;
 }
