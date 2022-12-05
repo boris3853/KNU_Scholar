@@ -21,42 +21,56 @@
       <div class="collapse navbar-collapse" id="navbarsExample06">
         <ul class="navbar-nav me-auto mb-2 mb-xl-0">
           <li class="nav-item">
-            <a class="nav-link" href="#">소개</a>
+            <form method="get" name="NavIntro" action='/About'>
+              <a class="nav-link" href="#" form="NavIntro" onclick="javascript:document.NavIntro.submit();">소개</a>
+            </form>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">검색</a>
+            <form method="get" name="NavSearch" action='/Search'>
+              <a class="nav-link" href="#" form="NavSearch" onclick="javascript:document.NavSearch.submit();">검색</a>
+            </form>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">게시물</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">공지</a></li>
-              <li><a class="dropdown-item" href="#">자유글</a></li>
-              <li><a class="dropdown-item" href="#">QnA</a></li>
+              <li>
+                <form method="get" name="NavNotice" action='/Article/Notice'>
+                  <a class="dropdown-item" href="#" form="NavNotice"
+                    onclick="javascript:document.NavNotice.submit();">공지</a>
+                </form>
+              </li>
+              <li>
+                <form method="get" name="NavFree" action='/Article/Free'>
+                  <a class="dropdown-item" href="#" form="NavFree"
+                    onclick="javascript:document.NavFree.submit();">자유글</a>
+                </form>
+              </li>
+              <li>
+                <form method="get" name="NavQNA" action='/Article/QNA'>
+                  <a class="dropdown-item" href="#" form="NavQNA" onclick="javascript:document.NavQNA.submit();">QnA</a>
+                </form>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled">북마크</a>
           </li>
           <li class="nav-item">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle disabled" href="#" data-bs-toggle="dropdown" aria-expanded="false">논문
-              추가</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">논문</a></li>
-              <li><a class="dropdown-item" href="#">저자</a></li>
-              <li><a class="dropdown-item" href="#">제목</a></li>
-              <li><a class="dropdown-item" href="#">키워드</a></li>
-            </ul>
-          </li>
+            <a class="nav-link disabled">논문 추가</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">로그인</a>
+            <form method="get" name="NavLogin" action='/Login'></form>
+            <a class="nav-link" href="#" form="NavQNA" onclick="javascript:document.NavLogin.submit();">로그인</a>
+            </form>
           </li>
         </ul>
+        <h1 class="d-flex align-items-center fs-4 text-white mb-0">
+          <%= id %>
+        </h1>
       </div>
+
     </div>
   </nav>
-
   <div class="contents">
     <p class="h1">Keyword</p>
     <hr>
