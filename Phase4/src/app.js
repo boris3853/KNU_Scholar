@@ -247,7 +247,26 @@ app.post('/Login/Logout', async (req, res) => {
 
 
 
+//////////////////////////////////////////////////////////
 
+
+app.get("/Bookmark", (req, res) => {
+    // 비로그인 상태면 bookmark1_NL.ejs 화면
+    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous"});
+    // 로그인 상태면 bookmark1_L.ejs 화면
+    else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
+});
+
+
+//////////////////////////////////////////////////////////
+
+
+app.get("/Search", (req, res) => {
+    // 비로그인 상태면 search1.ejs 화면  => Anonymous
+    if(!LoginState) res.render(__dirname + '/views/search1', {id: "Anonymous"});
+    // 로그인 상태면 search1.ejs 화면 => MainID
+    else res.render(__dirname + '/views/search1', {id: MainID});
+});
 
 
 
