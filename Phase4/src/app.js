@@ -58,16 +58,16 @@ async function init() {
 
 app.get("/Login", (req, res) => {
     // 비로그인 상태면 Login1.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/login1', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/login1', {id: "Anonymous", LS:0});
     // 로그인 상태면 Login3.ejs 화면
-    else res.render(__dirname + '/views/login3', {id: MainID});
+    else res.render(__dirname + '/views/login3', {id: MainID, LS:1});
 });
 
 // req 무시
 app.post('/Login/SU', (req, res) => {
-    if(!LoginState) res.render(__dirname + '/views/login2', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/login2', {id: "Anonymous", LS:0});
     // Just in Case
-    else res.render(__dirname + '/views/login2', {id: MainID});
+    else res.render(__dirname + '/views/login2', {id: MainID, LS:1});
 });
 
 app.post('/Login/FromSU', async(req, res) => {
@@ -118,13 +118,13 @@ app.post('/Login/FromSU', async(req, res) => {
 
         // Login 가능: DB내 Account가 없어야 생성 가능
         if(!isAccount){
-            res.render(__dirname + '/views/login1', {id: MainID});
+            res.render(__dirname + '/views/login1', {id: MainID, LS:0});
             // res.sendFile(__dirname + "/webpage/login3.ejs", {id: MainID, method:"post"});
         }
         // Login 불가능
         else{
             // 같은 페이지 보여주기
-            res.render(__dirname + '/views/login2', {id: MainID});
+            res.render(__dirname + '/views/login2', {id: MainID, LS:0});
         }
     }
 });
@@ -182,7 +182,8 @@ app.post('/Login/REQ', async (req, res) => {
     
     // Login 가능
     if(login_result){
-        res.render(__dirname + '/views/login3', {id: MainID});
+        LoginState = 1;
+        res.render(__dirname + '/views/login3', {id: MainID, LS:1});
         console.log("Login Account: " + MainID);
         // res.sendFile(__dirname + "/webpage/login3.ejs", {id: MainID, method:"post"});
     }
@@ -190,7 +191,7 @@ app.post('/Login/REQ', async (req, res) => {
     else{
         // 같은 페이지 보여주기
         console.log("Login Failed");
-        res.sendFile(__dirname + "/webpage/login1.html");
+        res.render(__dirname + '/views/login1', {id: "Anonymous", LS:0});
     }
 });
 
@@ -227,9 +228,9 @@ app.post('/Login/WithD', async (req, res) => {
         MainID = "Anonymous"
 
         // 비로그인 상태면 Login1.ejs 화면
-        if(!LoginState) res.render(__dirname + '/views/login1', {id: "Anonymous"});
+        if(!LoginState) res.render(__dirname + '/views/login1', {id: "Anonymous", LS:0});
         // 로그인 상태면 Login3.ejs 화면
-        else res.render(__dirname + '/views/login3', {id: MainID});
+        else res.render(__dirname + '/views/login3', {id: MainID, LS:1});
     }    
 });
 
@@ -240,9 +241,9 @@ app.post('/Login/Logout', async (req, res) => {
     MainID = "Anonymous"
 
     // 비로그인 상태면 Login1.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/login1', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/login1', {id: "Anonymous", LS:0});
     // 로그인 상태면 Login3.ejs 화면
-    else res.render(__dirname + '/views/login3', {id: MainID});
+    else res.render(__dirname + '/views/login3', {id: MainID, LS:1});
 });
 
 
@@ -251,9 +252,9 @@ app.post('/Login/Logout', async (req, res) => {
 
 app.get("/About", (req, res) => {
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/about', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/about', {id: "Anonymous", LS:0});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/about', {id: MainID});
+    else res.render(__dirname + '/views/about', {id: MainID, LS:1});
 });
 
 
@@ -262,9 +263,9 @@ app.get("/About", (req, res) => {
 
 app.get("/Bookmark", (req, res) => {
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous", LS:0});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
+    else res.render(__dirname + '/views/bookmark1_L', {id: MainID, LS:1});
 });
 
 
@@ -273,9 +274,9 @@ app.get("/Bookmark", (req, res) => {
 
 app.get("/Search", (req, res) => {
     // 비로그인 상태면 search1.ejs 화면  => Anonymous
-    if(!LoginState) res.render(__dirname + '/views/search1', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/search1', {id: "Anonymous", LS:0});
     // 로그인 상태면 search1.ejs 화면 => MainID
-    else res.render(__dirname + '/views/search1', {id: MainID});
+    else res.render(__dirname + '/views/search1', {id: MainID, LS:1});
 });
 
 app.post("/Search", (req, res) => {
@@ -291,24 +292,24 @@ app.post("/Search", (req, res) => {
 
 app.get("/Article/Notice", (req, res) => {
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/post1', {post: "공지", id: "Anonymous", LS:0});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
+    else res.render(__dirname + '/views/post1', {post: "공지", id: MainID, LS:1});
 });
 
 
 app.get("/Article/Free", (req, res) => {
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/post1', {post: "자유글", id: "Anonymous", LS:0});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
+    else res.render(__dirname + '/views/post1', {post: "자유글", id: MainID, LS:1});
 });
 
 app.get("/Article/QNA", (req, res) => {
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/post1', {post: "QnA", id: "Anonymous", LS:0});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/bookmark1_L', {id: MainID});
+    else res.render(__dirname + '/views/post1', {post: "QnA", id: MainID, LS:1});
 });
 
 
@@ -318,32 +319,32 @@ app.get("/Article/QNA", (req, res) => {
 
 app.get("/PaperAdd/Author", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
     // 로그인 상태면 paper_add_A.ejs
-    else res.render(__dirname + '/views/paper_add_A', {id: MainID});
+    else res.render(__dirname + '/views/post1', {id: MainID, LS:1});
 });
 
 app.get("/PaperAdd/Journal", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
     // 로그인 상태면 paper_add_J.ejs
-    else res.render(__dirname + '/views/paper_add_J', {id: MainID});
+    else res.render(__dirname + '/views/paper_add_J', {id: MainID, LS:1});
 });
 
 
 app.get("/PaperAdd/Paper", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
     // 로그인 상태면 paper_add_P.ejs
-    else res.render(__dirname + '/views/paper_add_P', {id: MainID});
+    else res.render(__dirname + '/views/paper_add_P', {id: MainID, LS:1});
 });
 
 
 app.get("/PaperAdd/Keyword", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous"});
+    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
     // 로그인 상태면 paper_add_K.ejs
-    else res.render(__dirname + '/views/paper_add_K', {id: MainID});
+    else res.render(__dirname + '/views/paper_add_K', {id: MainID, LS:1});
 });
 
 

@@ -8,7 +8,7 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Sixth navbar example">
+    <nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Sixth navbar example">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">KKK팀 DB 플젝</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06"
@@ -50,10 +50,22 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled">북마크</a>
+                        <form method="get" name="NavBook" action='/Bookmark'>
+                            <% if (LS == 0) { %>
+                            <a class="nav-link disabled" href="#" form="NavBook" onclick="javascript:document.NavBook.submit();">북마크</a>
+                            <% } else { %>
+                            <a class="nav-link" href="#" form="NavBook" onclick="javascript:document.NavBook.submit();">북마크</a>
+                            <% } %>  
+                        </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled">논문 추가</a>
+                        <form method="get" name="NavPaperAdd" action='/PaperAdd/Paper'>
+                            <% if (LS == 0) { %>
+                            <a class="nav-link disabled" href="#" form="NavPaperAdd" onclick="javascript:document.NavPaperAdd.submit();">논문 추가</a>
+                            <% } else { %>
+                            <a class="nav-link" href="#" form="NavPaperAdd" onclick="javascript:document.NavPaperAdd.submit();">논문 추가</a>
+                            <% } %>  
+                        </form>
                     </li>
                     <li class="nav-item">
                         <form method="get" name="NavLogin" action='/Login'></form>
@@ -63,11 +75,12 @@
                 </ul>
                 <h1 class="d-flex align-items-center fs-4 text-white mb-0">
                     <%= id %>
-                  </h1>
+                </h1>
             </div>
-            
         </div>
     </nav>
+
+	
   <div class="contents">
 	<p class="h1">Paper</p>
 	<hr>
