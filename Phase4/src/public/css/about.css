@@ -1,0 +1,10 @@
+h1{
+    margin-top : 10px;
+    background-color: black;
+    color : white;
+    width: 50%;
+    margin-left: 25%;
+}
+.info_content {
+    text-align: center;
+}
