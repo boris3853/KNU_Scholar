@@ -9,73 +9,45 @@
 
 <body>
 	<header>
-    <nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Sixth navbar example">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">KKK팀 DB 플젝</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06" aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+	  <nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Sixth navbar example">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">KKK팀 DB 플젝</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06" aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div class="collapse navbar-collapse" id="navbarsExample06">
-          <ul class="navbar-nav me-auto mb-2 mb-xl-0">
-          <li class="nav-item">
-            <form method="get" id="NavIntro">
-              <a class="nav-link" href="#" form="NavIntro" onclick="javascript: form.action='/About'">소개</a>
-            </form>      
+      <div class="collapse navbar-collapse" id="navbarsExample06">
+        <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+		  <li class="nav-item">
+            <a class="nav-link" href="#">소개</a>
           </li>		
           <li class="nav-item">
-            <form method="get" id="NavSearch">
-              <a class="nav-link" href="#" form="NavSearch" onclick="javascript: form.action='/Search'">검색</a>
-            </form>
+            <a class="nav-link" href="#">검색</a>
           </li>
-          <li class="nav-item dropdown">
+		  <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">게시물</a>
             <ul class="dropdown-menu">
-              <li>
-                <form method="get" id="NavNotice">
-                  <a class="dropdown-item" href="#" form="NavNotice" onclick="javascript: form.action='/Article/Notice'">공지</a>
-                </form>
-              </li>
-              <li>
-                <form method="get" id="NavFree">
-                  <a class="dropdown-item" href="#" form="NavFree" onclick="javascript: form.action='/Article/Free'">자유글</a>
-                </form>
-              </li>
-              <li>
-                <form method="get" id="NavQNA">
-                  <a class="dropdown-item" href="#" form="NavQNA" onclick="javascript: form.action='/Article/QNA'">QnA</a>
-                </form>
-              </li>
+              <li><a class="dropdown-item" href="#">공지</a></li>
+              <li><a class="dropdown-item" href="#">자유글</a></li>
+              <li><a class="dropdown-item" href="#">QnA</a></li>
             </ul>
           </li>
-          <li class="nav-item">
-            <% if(LoginState===0) { %>
+		  <li class="nav-item">
             <a class="nav-link disabled">북마크</a>
-            <% } else { %>
-            <a class="nav-link">북마크</a>
-            <% } %>
           </li>
-          <li class="nav-item">
-            <% if(LoginState===0) { %>
+		  <li class="nav-item">
             <a class="nav-link disabled">논문 추가</a>
-            <% } else { %>
-            <a class="nav-link">논문 추가</a>
-            <% } %>
           </li>
-          <li class="nav-item">
-            <% if(LoginState===0) { %>
+		  <li class="nav-item">
             <a class="nav-link" href="#">로그인</a>
-            <% } else { %>
-            <a class="nav-link">로그인</a>
-            <% } %>
           </li>    
-            </ul>
-        </div>
-        <h1 class="d-flex align-items-center fs-4 text-white mb-0">
-          <%= id %>
-        </h1>
+        </ul>
       </div>
-    </nav>
+      <h1 class="d-flex align-items-center fs-4 text-white mb-0">
+        <%= id %>
+      </h1>
+    </div>
+  </nav>
   </header>
   
   <main class="form-signin w-100 m-auto">
@@ -91,11 +63,6 @@
         <label for="floatingPassword">Password</label>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <!-- <input class="w-50 btn btn-lg btn-primary" type="button" onclick="test()" value="회원가입"> -->
-        <!-- <input class="w-50 btn btn-lg btn-primary" type="button" onclick="test()" value="로그인"> -->
-        <!-- <button class="w-50 btn btn-lg btn-primary" type="button" id="btn_SU">회원가입</button> -->
-        <!-- <a href="../login2.html" class="w-50 btn btn-lg btn-primary" type="button">회원가입</a> -->
-        <!-- <button class="w-50 btn btn-lg btn-primary" type="submit" id="btn_SI">로그인</button> -->
         <button class="w-50 btn btn-lg btn-primary" type="submit" id="btn_SU" form="MainLogin"
           onclick="javascript: form.action='/Login/SU'">회원가입</button>
         <button class="w-50 btn btn-lg btn-primary" type="submit" id="btn_SI" form="MainLogin"
