@@ -1,6 +1,6 @@
 var oracledb = require('oracledb');
 var dbConfig = require('./config/dbConfig');
-
+oracledb.autoCommit = true;
 
 function showpost(req, res){
 
@@ -22,11 +22,24 @@ function run()
         }
 
         // PrepareStatement 구조
-        let query = 'SELECT p_no, title, id, date_time FROM POST WHERE CATEGORY = :KIND';
-       
+        // let query = 'SELECT p_no, title, id, date_time FROM POST WHERE CATEGORY = :KIND';
+        let query = 'INSERT INTO POST VALUES(:ID, :PNO, :CTG, :TITLE, TO_DATE(SYSDATE, \'yyyy/mm/dd\'), 0, TO_CLOB(:CTNT))';
+        // let query = "commit";
+
+        // MainID,
+        //     PostN,
+        //     bind,
+        //     req.body.title,
+        //     ,
+        //     req.body.description
+
         let binddata = [
             // "test2","test2"
-            "ANN"
+            "test",
+            51,
+            "ANN",
+            "제목 테스트",
+            "내용 테스트"
 
             // Number(request.body.empno),
             // request.body.ename,
@@ -57,6 +70,7 @@ function run()
             + MainID + ' and ac.passwd = ' + MainPW;
             */
         connection.execute(query, binddata, function (err, result) {
+        // connection.execute(query, function (err, result) {
             if (err) {
                 console.error(err.message);
                 doRelease(connection);
@@ -78,7 +92,8 @@ function run()
 
             console.dir(result)
 
-            console.log(result.rows.length);
+            // console.log(result.rows[0][0]);
+
 
 
             doRelease(connection, result.rows);         // Connection 해제
@@ -101,3 +116,5 @@ function run()
 }
 
 run();
+
+// console.log(Date());

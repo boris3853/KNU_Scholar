@@ -85,40 +85,67 @@
     <h1 class="mt-4"><strong><%= post %></strong></h1>
     <div class="card mb-4" style="border-color: transparent;">
       <div class="card-header" style="background-color: transparent;">
-        <form method="get" name="PostAdd" action='/Post/Add'></form>
-            <a class="btn btn-primary float-end" href="#"  form="PostAdd" onclick="javascript:document.PostAdd.submit();">글 작성</a>
+        <form method="get" name="PostAdd" action='/Article/Add'>
+            <input type="hidden" name="kind" value="<%= post %>"/> 
+            <% if (LS == 0) { %>
+            <a class="btn btn-primary float-end disabled" href="#"  form="PostAdd" onclick="javascript:document.PostAdd.submit();">글 작성</a>
+            <% } else { %>
+            <a class="btn btn-primary float-end " href="#"  form="PostAdd" onclick="javascript:document.PostAdd.submit();">글 작성</a>
+            <% } %>  
         </form>
       </div>
 
       <div class="table-responsive">
-        <table class="table">
-
-
-          <thead class="table-dark">
-            <tr>
+        <form method="get" name="PostDetail" id="PostDetail"action='/Article/Detail'>
+          <input type="hidden" name="kind" value="<%= post %>"/>
+          <input type="hidden" name="PValue" id="PValue" value=""/>
+        
+          <table class="table">
+            <thead class="table-dark">
               <th>#</th>
               <th>글제목</th>
               <th>작성자</th>
               <th>시간</th>
-            </tr>
-          </thead>
+            </thead>
+            <tbody class="table-group-divider ">
+              <% for(var i=0;i<results.length;++i){
+                var PNO = results[i][0];
+                var TIT = results[i][1];
+                var ATH = results[i][2];
+                var DTM = results[i][3];%>
 
-          <tbody class="table-group-divider ">
-            <% for(var i=0;i<results.length;++i){
-              var PNO = results[i][0];
-              var TIT = results[i][1];
-              var ATH = results[i][2];
-              var DTM = results[i][3];%>
-              <tr>
-                <td># <%=PNO%></td>
-                <td><%=TIT%></td>
-                <td><%=ATH%></td>
-                <td><%=DTM%></td>
-              </tr>
-            <% } %>
-          </tbody>
-
-        </table>
+                <tr>
+                    <td>
+                      <div id="<%=PNO%>"></div>
+                      <a form="PostDetail" onclick="SUB(this)"># <%=PNO%></a>
+                    </td>
+                    <td>
+                      <div id="<%=PNO%>"></div>
+                      <a form="PostDetail" onclick="SUB(this)"><%=TIT%></a>
+                    </td>
+                    <td>
+                      <div id="<%=PNO%>"></div>
+                      <a form="PostDetail" onclick="SUB(this)"><%=ATH%></a>
+                    </td>
+                    <td>
+                      <div id="<%=PNO%>"></div>
+                      <a form="PostDetail" onclick="SUB(this)"><%=DTM%></a>
+                    </td>
+                  </a>
+                </tr>
+                <script>
+                  function SUB(e)
+                  {
+                    // 공백을 생각해서 previousSibling 두번 필요
+                    var num = e.previousSibling.previousSibling.id;
+                    document.getElementById('PValue').value=num;
+                    document.getElementById('PostDetail').submit();
+                  }
+                </script> 
+              <% } %>
+            </tbody>
+          </table>
+        </form>
       </div>
     </div>
     <nav aria-label="Page navigation example">
