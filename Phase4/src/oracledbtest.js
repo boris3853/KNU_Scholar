@@ -2,6 +2,10 @@ var oracledb = require('oracledb');
 var dbConfig = require('./config/dbConfig');
 
 
+function showpost(req, res){
+
+}
+
 
 function run()
 {
@@ -18,11 +22,11 @@ function run()
         }
 
         // PrepareStatement 구조
-        let query = 'SELECT COUNT(*) as EXIST FROM ACCOUNT ac WHERE ac.id = :ID';
+        let query = 'SELECT p_no, title, id, date_time FROM POST WHERE CATEGORY = :KIND';
        
         let binddata = [
             // "test2","test2"
-            "test"
+            "ANN"
 
             // Number(request.body.empno),
             // request.body.ename,
@@ -58,8 +62,25 @@ function run()
                 doRelease(connection);
                 return;
             }
-            console.log(result.rows[0][0]);                   // 데이터
+            // console.log(Date(result.rows[0][2]));                   // 데이터
             
+            /*
+            console.log(new Date(result.rows[0][2]).getFullYear());
+            console.log(new Date(result.rows[0][2]).getMonth()+1);
+            console.log(new Date(result.rows[0][2]).getDay());
+
+            let YY = new Date(result.rows[0][2]).getFullYear();
+            let MM = new Date(result.rows[0][2]).getMonth() + 1;
+            let DD = new Date(result.rows[0][2]).getDay();
+
+            console.log(YY + "-" + MM + "-" + DD);
+            */
+
+            console.dir(result)
+
+            console.log(result.rows.length);
+
+
             doRelease(connection, result.rows);         // Connection 해제
             
         });

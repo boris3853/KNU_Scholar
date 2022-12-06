@@ -290,26 +290,222 @@ app.post("/Search", (req, res) => {
 //////////////////////////////////////////////////////////
 
 
-app.get("/Article/Notice", (req, res) => {
+app.get("/Article/Notice", async(req, res) => {
+    let connection;
+    var context;
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        let sql = 'SELECT p_no, title, id, date_time FROM POST WHERE CATEGORY = :KIND';
+
+        let binds = [
+            "ANN"
+        ];
+        
+        var results = await connection.execute(sql, binds);
+
+        console.dir(results)
+        
+        // var DTM = [];
+        // for(var i=0;i<results.length;++i){
+        //     var YY = new Date(results.rows[i][2]).getFullYear();
+        //     var MM = new Date(results.rows[i][2]).getMonth() + 1;
+        //     var DD = new Date(results.rows[i][2]).getDay();
+        //     // DTM.push("".concat(YY,"-",MM,"-",DD));
+        //     DTM.push("d");
+        // }
+
+        // console.log(DTM);
+
+        context = {results:results.rows};
+        
+
+        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                
+        
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/post1', {post: "공지", id: "Anonymous", LS:0});
+    if(!LoginState)
+    {
+        context.id = "Anonymous";
+        context.LS = 0;
+    }
+    // res.render(__dirname + , {post: "공지", id: "Anonymous", LS:0});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/post1', {post: "공지", id: MainID, LS:1});
+    else 
+    {
+        context.id = MainID;
+        context.LS = 1;
+    }
+
+    context.post = "공지";
+    res.render(__dirname + '/views/post1', context, function(err,html){
+        res.end(html);
+    })
+    // res.render(__dirname + '/views/post1', {post: "공지", id: MainID, LS:1});
+    
 });
 
 
-app.get("/Article/Free", (req, res) => {
+app.get("/Article/Free", async(req, res) => {
+    let connection;
+    var context;
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        let sql = 'SELECT p_no, title, id, date_time FROM POST WHERE CATEGORY = :KIND';
+
+        let binds = [
+            "GNL"
+        ];
+        
+        var results = await connection.execute(sql, binds);
+
+        console.dir(results)
+        
+        // var DTM = [];
+        // for(var i=0;i<results.length;++i){
+        //     var YY = new Date(results.rows[i][2]).getFullYear();
+        //     var MM = new Date(results.rows[i][2]).getMonth() + 1;
+        //     var DD = new Date(results.rows[i][2]).getDay();
+        //     // DTM.push("".concat(YY,"-",MM,"-",DD));
+        //     DTM.push("d");
+        // }
+
+        // console.log(DTM);
+
+        context = {results:results.rows};
+        
+
+        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                
+        
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/post1', {post: "자유글", id: "Anonymous", LS:0});
+    if(!LoginState)
+    {
+        context.id = "Anonymous";
+        context.LS = 0;
+    }
+    // res.render(__dirname + , {post: "공지", id: "Anonymous", LS:0});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/post1', {post: "자유글", id: MainID, LS:1});
+    else 
+    {
+        context.id = MainID;
+        context.LS = 1;
+    }
+
+    context.post = "자유글";
+    res.render(__dirname + '/views/post1', context, function(err,html){
+        res.end(html);
+    })
+    
+    // 비로그인 상태면 bookmark1_NL.ejs 화면
+    // if(!LoginState) res.render(__dirname + '/views/post1', {post: "자유글", id: "Anonymous", LS:0});
+    // 로그인 상태면 bookmark1_L.ejs 화면
+    // else res.render(__dirname + '/views/post1', {post: "자유글", id: MainID, LS:1});
 });
 
-app.get("/Article/QNA", (req, res) => {
+app.get("/Article/QNA", async(req, res) => {
+    let connection;
+    var context;
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        let sql = 'SELECT p_no, title, id, date_time FROM POST WHERE CATEGORY = :KIND';
+
+        let binds = [
+            "QNA"
+        ];
+        
+        var results = await connection.execute(sql, binds);
+
+        console.dir(results)
+        
+        // var DTM = [];
+        // for(var i=0;i<results.length;++i){
+        //     var YY = new Date(results.rows[i][2]).getFullYear();
+        //     var MM = new Date(results.rows[i][2]).getMonth() + 1;
+        //     var DD = new Date(results.rows[i][2]).getDay();
+        //     // DTM.push("".concat(YY,"-",MM,"-",DD));
+        //     DTM.push("d");
+        // }
+
+        // console.log(DTM);
+
+        context = {results:results.rows};
+        
+
+        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                
+        
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/post1', {post: "QnA", id: "Anonymous", LS:0});
+    if(!LoginState)
+    {
+        context.id = "Anonymous";
+        context.LS = 0;
+    }
+    // res.render(__dirname + , {post: "공지", id: "Anonymous", LS:0});
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/post1', {post: "QnA", id: MainID, LS:1});
+    else 
+    {
+        context.id = MainID;
+        context.LS = 1;
+    }
+
+    context.post = "QnA";
+    res.render(__dirname + '/views/post1', context, function(err,html){
+        res.end(html);
+    })
+
+
+    // 비로그인 상태면 bookmark1_NL.ejs 화면
+    // if(!LoginState) res.render(__dirname + '/views/post1', {post: "QnA", id: "Anonymous", LS:0});
+    // 로그인 상태면 bookmark1_L.ejs 화면
+    // else res.render(__dirname + '/views/post1', {post: "QnA", id: MainID, LS:1});
 });
 
 
