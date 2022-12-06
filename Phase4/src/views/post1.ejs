@@ -88,9 +88,9 @@
         <form method="get" name="PostAdd" action='/Article/Add'>
             <input type="hidden" name="kind" value="<%= post %>"/> 
             <% if (LS == 0) { %>
-            <a class="btn btn-primary float-end disabled" href="#"  form="PostAdd" onclick="javascript:document.PostAdd.submit();">글 작성</a>
+            <a class="btn btn-primary float-end disabled" href="#" form="PostAdd" onclick="javascript:document.PostAdd.submit();">글 작성</a>
             <% } else { %>
-            <a class="btn btn-primary float-end " href="#"  form="PostAdd" onclick="javascript:document.PostAdd.submit();">글 작성</a>
+            <a class="btn btn-primary float-end " href="#" form="PostAdd" onclick="javascript:document.PostAdd.submit();">글 작성</a>
             <% } %>  
         </form>
       </div>

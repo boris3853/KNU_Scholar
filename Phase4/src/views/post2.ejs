@@ -84,186 +84,99 @@
             </h1>
         </div>
     </div>
-</nav>
+  </nav>
 
-
-</body>
-
-
-<!-- Page content-->
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-lg-8">
-      <!-- Post content-->
-      <article>
-        <!-- Post header-->
-        <header class="mb-4">
-          <!-- Post title-->
-          <h1 class="fw-bolder mb-1"> <%=kind%></h1>
-          <h2 class="fw-bolder mb-1"> <%=title%></h2>
-          <!-- Post meta content-->
-          <div class="text-muted fst-italic mb-2"><%=date%> / <%=author%></div>
-          <div class="row">
-            <div class="col">
+  <!-- Page content-->
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Post content-->
+        <article>
+          <!-- Post header-->
+          <header class="mb-4">
+            <!-- Post title-->
+            <h1 class="fw-bolder mb-1"> <%=kind%></h1>
+            <h2 class="fw-bolder mb-1"> <%=title%></h2>
+            <!-- Post meta content-->
+            <div class="text-muted fst-italic mb-2"><%=date%> / <%=author%></div>
+            <!-- <div class="row">
+              <div class="col"> -->
+            <form method="get" name="PostDelete" action='/Article/Delete'>
+              <input type="hidden" name="kind" id="kind" value="<%= kind %>"/>
+              <input type="hidden" name="pno" id="pno" value="<%= pval %>"/>
+              
               <% if (canDelete == 0) { %>
-              <button class="btn btn-primary float-end disabled" type="button">글 삭제</button>
+              <a class="btn btn-primary float-end disabled" form="PostDelete" 
+              onclick="javascript:document.PostDelete.submit();">글 삭제</a>
               <% } else { %>
-              <button class="btn btn-primary float-end" type="button">글 삭제</button>
+              <a class="btn btn-primary float-end" form="PostDelete" 
+              onclick="javascript:document.PostDelete.submit();">글 삭제</a>
               <% } %>
+            </form>
+              <!-- </div>
+            </div> -->
+          </header>
+          <!-- Post content-->
+          <section class="mb-5">
+            <p class="fs-5 mb-4"><%=content%></p>
+          </section>
+        </article>
+        <!-- Comments section-->
+        <section class="mb-5">
+          <div class="card bg-light">
+            <div class="card-body">
+              <!-- Comment form-->
+              <form class="mb-4" method="post" id="InputComment">
+                <input type="hidden" name="kind" id="kind" value="<%= kind %>"/>
+                <input type="hidden" name="cno" id="cno" value="<%= lastCMT %>"/>
+                <input type="hidden" name="pno" id="pno" value="<%= pval %>"/>
+
+                <textarea class="form-control" rows="3" name="UserComment"
+                  placeholder="Join the discussion and leave a comment!"></textarea>
+                
+
+                <% if (LS == 0) { %>
+                <input type="submit" class="btn btn-info disabled" value="댓글 등록" form="InputComment"
+                  onclick="javascript: form.action='/Article/AddComment'"
+                  style="display: block; margin: 5px 0 10px 0; float: right;">
+                <% } else { %>
+                <input type="submit" class="btn btn-info" value="댓글 등록" form="InputComment"
+                  onclick="javascript: form.action='/Article/AddComment'"
+                  style="display: block; margin: 5px 0 10px 0; float: right;">
+                <% } %>  
+                
+
+              </form>
+              <!-- Comment with nested comments-->
+              
+              <% for(var i=0;i<comments.length;++i){
+                var ID = comments[i][0];
+                var CNO = comments[i][1];
+                var PNO = comments[i][2];
+                var CCT = comments[i][3];%>
+                
+                <div class="d-flex">
+                  <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                  <div class="ms-3">
+                    <div class="fw-bold"><%=ID%></div>
+                    <%=CCT%>
+                  </div>
+                </div>
+              <%}%>
             </div>
           </div>
-        </header>
-        <!-- Post content-->
-        <section class="mb-5">
-          <p class="fs-5 mb-4"><%=content%></p>
         </section>
-      </article>
-      <!-- Comments section-->
-      <section class="mb-5">
-        <div class="card bg-light">
-          <div class="card-body">
-            <!-- Comment form-->
-            <form class="mb-4" method="post" id="InputComment">
-              <input type="hidden" name="kind" id="kind" value="<%= kind %>"/>
-              <input type="hidden" name="cno" id="cno" value="<%= lastCMT %>"/>
-              <input type="hidden" name="pno" id="pno" value="<%= pval %>"/>
-
-              <textarea class="form-control" rows="3" name="UserComment"
-                placeholder="Join the discussion and leave a comment!"></textarea>
-              
-
-              <% if (LS == 0) { %>
-              <input type="submit" class="btn btn-info disabled" value="댓글 등록" form="InputComment"
-                onclick="javascript: form.action='/Article/AddComment'"
-                style="display: block; margin: 5px 0 10px 0; float: right;">
-              <% } else { %>
-              <input type="submit" class="btn btn-info" value="댓글 등록" form="InputComment"
-                onclick="javascript: form.action='/Article/AddComment'"
-                style="display: block; margin: 5px 0 10px 0; float: right;">
-              <% } %>  
-              
-
-            </form>
-            <!-- Comment with nested comments-->
-            
-            <% for(var i=0;i<comments.length;++i){
-              var ID = comments[i][0];
-              var CNO = comments[i][1];
-              var PNO = comments[i][2];
-              var CCT = comments[i][3];%>
-              
-              <div class="d-flex">
-                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                <div class="ms-3">
-                  <div class="fw-bold"><%=ID%></div>
-                  <%=CCT%>
-                </div>
-              </div>
-            <%}%>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   </div>
-</div>
+</body>
+
 <!-- Footer-->
 <footer class="py-5 bg-dark">
   <div class="container">
     <p class="m-0 text-center text-white">Copyright &copy; KKK 2022</p>
   </div>
 </footer>
-<!-- Bootstrap core JS-->
-
-<!-- Core theme JS-->
-<script src="./res/js/blog-postscripts.js"></script>
-
-
-
-
-<!------ Include the above in your HEAD tag ---------->
-
-<!-----
-<article class="blog-post">
-        <h2 class="blog-post-title mb-1">Another blog post</h2>
-        <p class="blog-post-meta">December 23, 2020 by <a href="#">Jacob</a></p>
-
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <blockquote>
-          <p>Longer quote goes here, maybe with some <strong>emphasized text</strong> in the middle of it.</p>
-        </blockquote>
-        <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-        <h3>Example table</h3>
-        <p>And don't forget about tables in these posts:</p>
-        <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
-</article>
-
-
-<div class="container">
-  <div class="post-comments">
-
-    <form>
-      <div class="form-group">
-        <label for="comment">Your Comment</label>
-        <textarea name="comment" class="form-control" rows="3"></textarea>
-      </div>
-      <button type="submit" class="btn btn-default">Send</button>
-    </form>
-
-    <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                  <div class="page-header">
-                    <h1><small class="pull-right">45 comments</small> Comments </h1>
-                  </div> 
-                   <div class="comments-list">
-                       <div class="media">
-                           <p class="pull-right"><small>5 days ago</small></p>
-                            <div class="media-body">
-                                
-                              <h4 class="media-heading user_name">User 1</h4>
-                              Content1
-                              
-                            </div>
-                          </div>
-                       <div class="media">
-                           <p class="pull-right"><small>5 days ago</small></p>
-                            <div class="media-body">
-                                
-                              <h4 class="media-heading user_name">User 2</h4>
-                              Content2
-                              
-                            </div>
-                          </div>
-                       <div class="media">
-                           <p class="pull-right"><small>5 days ago</small></p>
-                            <div class="media-body">
-                                
-                              <h4 class="media-heading user_name">User 3</h4>
-                              Content3
-                              
-                            </div>
-                          </div>
-                       <div class="media">
-                           <p class="pull-right"><small>5 days ago</small></p>
-                            <div class="media-body">
-                                
-                              <h4 class="media-heading user_name">User 4</h4>
-                              Content4
-                              
-                            </div>
-                          </div>
-                   </div>
-                    
-                    
-                    
-                </div>
-            </div>
-        </div>
-
-
-  </div>
-  <!-- post-comments -->
-</div>
 
 
 </html>
