@@ -615,6 +615,8 @@ app.post("/Article/Add", async(req, res) => {
     //     kind: req.query.kind, id: MainID, LS:1});
 });
 
+
+
 app.get('/Article/Detail', async(req, res) =>{
     // console.log(req.query.kind);
     // console.log(req.query.PValue);
@@ -635,11 +637,10 @@ app.get('/Article/Detail', async(req, res) =>{
         
         var results = await connection.execute(sql, binds);
 
+
         console.dir(results);
         // console.log(results.rows[0][6]);
         
-        // query2
-
         context = {
             author:results.rows[0][0],
             pval:results.rows[0][1],
@@ -647,7 +648,29 @@ app.get('/Article/Detail', async(req, res) =>{
             date:results.rows[0][4],
             content:results.rows[0][6]
         };
+
+        if(context.author === MainID)
+            context.canDelete = 1;
+        else
+            context.canDelete = 0;
         
+
+        // query2
+        sql = 'SELECT * FROM COMMENTS co WHERE co.p_no = :PNO';
+
+        results = await connection.execute(sql, binds);
+
+        console.dir(results.rows);
+
+        context.comments = results.rows;
+        
+        // console.log(context.comments.length);
+        // console.log(results.rows[context.comments.length-1][1]+1);
+        if(context.comments.length > 0)
+            context.lastCMT = results.rows[context.comments.length-1][1]+1;
+        else
+            context.lastCMT = 1;
+
         res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
     } catch (err) {
         console.error(err);
@@ -662,8 +685,107 @@ app.get('/Article/Detail', async(req, res) =>{
         }
     }
     
+    if(!LoginState)
+    {
+        context.id="Anonymous";
+        context.LS=0;
+    }
+    else
+    {
+        context.id=MainID;
+        context.LS=1;
+    }
     
     
+    context.kind = req.query.kind;
+    res.render(__dirname + '/views/post2', context, function(err,html){
+        res.end(html);
+    });
+});
+
+
+app.post('/Article/AddComment', async(req, res) =>{
+    let connection;
+    var context;
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+        
+        // query1
+        let sql = 'INSERT INTO COMMENTS VALUES(:ID, :CNO, :PNO, :CTNT)';
+        
+        let binds = [
+            MainID,
+            req.body.cno,
+            req.body.pno,
+            req.body.UserComment
+        ];
+
+        // console.log(binds[0]);
+        // console.log(binds[1]);
+        // console.log(binds[2]);
+        // console.log(binds[3]);
+        
+        
+        var results = "";
+
+        // comment가 비어있으면
+        if(binds[3] !== "")
+            results = await connection.execute(sql, binds);
+        console.log(results);
+
+        // query2
+        sql = 'SELECT * FROM POST p WHERE p.p_no = :PNO';
+
+        binds = [
+            req.body.pno
+        ];
+        
+        results = await connection.execute(sql, binds);
+
+        console.dir(results);
+        // console.log(results.rows[0][6]);
+        
+        context = {
+            author:results.rows[0][0],
+            pval:results.rows[0][1],
+            title:results.rows[0][3],
+            date:results.rows[0][4],
+            content:results.rows[0][6]
+        };
+
+        if(context.author === MainID)
+            context.canDelete = 1;
+        else
+            context.canDelete = 0;
+
+        // query3
+        sql = 'SELECT * FROM COMMENTS co WHERE co.p_no = :PNO';
+
+        results = await connection.execute(sql, binds);
+
+        console.dir(results.rows);
+
+        context.comments = results.rows;
+        
+        // console.log(results.rows[context.comments.length-1][1]+1);
+        context.lastCMT = results.rows[context.comments.length-1][1]+1;
+        
+        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+
     if(!LoginState)
     {
         context.id="Anonymous";
@@ -675,11 +797,12 @@ app.get('/Article/Detail', async(req, res) =>{
         context.LS=1;
     }
 
-    context.kind = req.query.kind;
+    context.kind = req.body.kind;
     res.render(__dirname + '/views/post2', context, function(err,html){
         res.end(html);
     });
 });
+
 
 //////////////////////////////////////////////////////////
 

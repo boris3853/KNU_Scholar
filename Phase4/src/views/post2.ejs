@@ -105,8 +105,11 @@
           <div class="text-muted fst-italic mb-2"><%=date%> / <%=author%></div>
           <div class="row">
             <div class="col">
-              <button class="btn btn-primary float-end" type="button">글 삭제
-              </button>
+              <% if (canDelete == 0) { %>
+              <button class="btn btn-primary float-end disabled" type="button">글 삭제</button>
+              <% } else { %>
+              <button class="btn btn-primary float-end" type="button">글 삭제</button>
+              <% } %>
             </div>
           </div>
         </header>
@@ -120,56 +123,47 @@
         <div class="card bg-light">
           <div class="card-body">
             <!-- Comment form-->
-            <form class="mb-4"><textarea class="form-control" rows="3"
+            <form class="mb-4" method="post" id="InputComment">
+              <input type="hidden" name="kind" id="kind" value="<%= kind %>"/>
+              <input type="hidden" name="cno" id="cno" value="<%= lastCMT %>"/>
+              <input type="hidden" name="pno" id="pno" value="<%= pval %>"/>
+
+              <textarea class="form-control" rows="3" name="UserComment"
                 placeholder="Join the discussion and leave a comment!"></textarea>
-              <input type="submit" class="btn btn-info" value="댓글 등록"
+              
+
+              <% if (LS == 0) { %>
+              <input type="submit" class="btn btn-info disabled" value="댓글 등록" form="InputComment"
+                onclick="javascript: form.action='/Article/AddComment'"
                 style="display: block; margin: 5px 0 10px 0; float: right;">
+              <% } else { %>
+              <input type="submit" class="btn btn-info" value="댓글 등록" form="InputComment"
+                onclick="javascript: form.action='/Article/AddComment'"
+                style="display: block; margin: 5px 0 10px 0; float: right;">
+              <% } %>  
+              
+
             </form>
             <!-- Comment with nested comments-->
-            <div class="d-flex mb-4">
-              <!-- Parent comment-->
-              <div class="flex-shrink-0"><img class="rounded-circle"
-                  src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-              <div class="ms-3">
-                <div class="fw-bold">Commenter Name</div>
-                If you're going to lead a space frontier, it has to be government; it'll never be private enterprise.
-                Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                <!-- Child comment 1-->
-                <div class="d-flex mt-4">
-                  <div class="flex-shrink-0"><img class="rounded-circle"
-                      src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                  <div class="ms-3">
-                    <div class="fw-bold">Commenter Name</div>
-                    And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You
-                    can't get investors.
-                  </div>
-                </div>
-                <!-- Child comment 2-->
-                <div class="d-flex mt-4">
-                  <div class="flex-shrink-0"><img class="rounded-circle"
-                      src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                  <div class="ms-3">
-                    <div class="fw-bold">Commenter Name</div>
-                    When you put money directly to a problem, it makes a good headline.
-                  </div>
+            
+            <% for(var i=0;i<comments.length;++i){
+              var ID = comments[i][0];
+              var CNO = comments[i][1];
+              var PNO = comments[i][2];
+              var CCT = comments[i][3];%>
+              
+              <div class="d-flex">
+                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                <div class="ms-3">
+                  <div class="fw-bold"><%=ID%></div>
+                  <%=CCT%>
                 </div>
               </div>
-            </div>
-            <!-- Single comment-->
-            <div class="d-flex">
-              <div class="flex-shrink-0"><img class="rounded-circle"
-                  src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-              <div class="ms-3">
-                <div class="fw-bold">Commenter Name</div>
-                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile
-                that with statements of beneficence.
-              </div>
-            </div>
+            <%}%>
           </div>
         </div>
       </section>
     </div>
-
   </div>
 </div>
 <!-- Footer-->
