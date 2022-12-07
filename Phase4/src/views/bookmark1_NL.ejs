@@ -19,62 +19,98 @@
             <ul class="navbar-nav me-auto mb-2 mb-xl-0">
                 <li class="nav-item">
                     <form method="get" name="NavIntro" action='/About'>
-                      <a class="nav-link" href="#" form="NavIntro" onclick="javascript:document.NavIntro.submit();">소개</a>
+                        <a class="nav-link" href="#" form="NavIntro"
+                            onclick="javascript:document.NavIntro.submit();">소개</a>
                     </form>
-                  </li>	
-                  <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <form method="get" name="NavSearch" action='/Search'>
-                      <a class="nav-link" href="#" form="NavSearch" onclick="javascript:document.NavSearch.submit();">검색</a>
+                        <a class="nav-link" href="#" form="NavSearch"
+                            onclick="javascript:document.NavSearch.submit();">검색</a>
                     </form>
-                  </li>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         aria-expanded="false">게시물</a>
                     <ul class="dropdown-menu">
                         <li>
                             <form method="get" name="NavNotice" action='/Article/Notice'>
-                              <a class="dropdown-item" href="#" form="NavNotice" onclick="javascript:document.NavNotice.submit();">공지</a>
+                                <a class="dropdown-item" href="#" form="NavNotice"
+                                    onclick="javascript:document.NavNotice.submit();">공지</a>
                             </form>
                         </li>
                         <li>
                             <form method="get" name="NavFree" action='/Article/Free'>
-                              <a class="dropdown-item" href="#" form="NavFree" onclick="javascript:document.NavFree.submit();">자유글</a>
+                                <a class="dropdown-item" href="#" form="NavFree"
+                                    onclick="javascript:document.NavFree.submit();">자유글</a>
                             </form>
                         </li>
                         <li>
                             <form method="get" name="NavQNA" action='/Article/QNA'>
-                              <a class="dropdown-item" href="#" form="NavQNA" onclick="javascript:document.NavQNA.submit();">QnA</a>
+                                <a class="dropdown-item" href="#" form="NavQNA"
+                                    onclick="javascript:document.NavQNA.submit();">QnA</a>
                             </form>
-                        </li>    
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <form method="get" name="NavBook" action='/Bookmark'>
-                        <% if (LS == 0) { %>
-                        <a class="nav-link disabled" href="#" form="NavBook" onclick="javascript:document.NavBook.submit();">북마크</a>
-                        <% } else { %>
-                        <a class="nav-link" href="#" form="NavBook" onclick="javascript:document.NavBook.submit();">북마크</a>
-                        <% } %>  
+                        <% if (LS==0) { %>
+                            <a class="nav-link disabled" href="#" form="NavBook"
+                                onclick="javascript:document.NavBook.submit();">북마크</a>
+                            <% } else { %>
+                                <a class="nav-link" href="#" form="NavBook"
+                                    onclick="javascript:document.NavBook.submit();">북마크</a>
+                                <% } %>
                     </form>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item dropdown">
                     <form method="get" name="NavPaperAdd" action='/PaperAdd/Paper'>
-                        <% if (LS == 0) { %>
-                        <a class="nav-link disabled" href="#" form="NavPaperAdd" onclick="javascript:document.NavPaperAdd.submit();">논문 추가</a>
+                    <% if (LS==0) { %>
+                        <a class="nav-link dropdown-toggle disabled" href="#" form="NavPaperAdd">논문 추가</a>
+                        <ul class="dropdown-menu"></ul>
                         <% } else { %>
-                        <a class="nav-link" href="#" form="NavPaperAdd" onclick="javascript:document.NavPaperAdd.submit();">논문 추가</a>
-                        <% } %>  
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                                aria-expanded="false">논문 추가</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <form method="get" name="NavPaperP" action='/PaperAdd/Paper'>
+                                        <a class="dropdown-item" href="#" form="NavPaperP"
+                                            onclick="javascript:document.NavPaperP.submit();">논문</a>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form method="get" name="NavPaperA" action='/PaperAdd/Author'>
+                                        <a class="dropdown-item" href="#" form="NavPaperA"
+                                            onclick="javascript:document.NavPaperA.submit();">저자</a>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form method="get" name="NavPaperJ" action='/PaperAdd/Journal'>
+                                        <a class="dropdown-item" href="#" form="NavPaperJ"
+                                            onclick="javascript:document.NavPaperJ.submit();">저널</a>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form method="get" name="NavPaperK" action='/PaperAdd/Keyword'>
+                                        <a class="dropdown-item" href="#" form="NavPaperK"
+                                            onclick="javascript:document.NavPaperK.submit();">키워드</a>
+                                    </form>
+                                </li>
+                            </ul>
+                        <% } %>
                     </form>
                 </li>
                 <li class="nav-item">
                     <form method="get" name="NavLogin" action='/Login'></form>
-                        <a class="nav-link" href="#"  form="NavQNA" onclick="javascript:document.NavLogin.submit();">로그인</a>
+                    <a class="nav-link" href="#" form="NavQNA"
+                        onclick="javascript:document.NavLogin.submit();">로그인</a>
                     </form>
                 </li>
             </ul>
-            <h1 class="d-flex align-items-center fs-4 text-white mb-0">
-                <%= id %>
-            </h1>
+                <h1 class="d-flex align-items-center fs-4 text-white mb-0">
+                    <%= id %>
+                </h1>
         </div>
     </div>
 </nav>
