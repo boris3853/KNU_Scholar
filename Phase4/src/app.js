@@ -960,7 +960,7 @@ app.get("/PaperAdd/Author", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
     if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
     // 로그인 상태면 paper_add_A.ejs
-    else res.render(__dirname + '/views/post1', {id: MainID, LS:1});
+    else res.render(__dirname + '/views/paper_add_A', {id: MainID, LS:1});
 });
 
 app.get("/PaperAdd/Journal", (req, res) => {
