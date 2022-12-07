@@ -275,9 +275,9 @@ app.get("/Bookmark", (req, res) => {
 
 app.get("/Search", (req, res) => {
     // 비로그인 상태면 search1.ejs 화면  => Anonymous
-    if(!LoginState) res.render(__dirname + '/views/search1', {id: "Anonymous", LS:0});
+    if(!LoginState) res.render(__dirname + '/views/search1', {err: -1, id: "Anonymous", LS:0});
     // 로그인 상태면 search1.ejs 화면 => MainID
-    else res.render(__dirname + '/views/search1', {id: MainID, LS:1});
+    else res.render(__dirname + '/views/search1', {err: -1, id: MainID, LS:1});
 });
 
 app.post("/Search", async(req, res) => {
@@ -301,7 +301,7 @@ app.post("/Search", async(req, res) => {
     ];
 
     let connection;
-    var context;
+    var context = {};
 
     try {
         // Get a connection from the default pool
@@ -309,12 +309,19 @@ app.post("/Search", async(req, res) => {
 
         var results = await connection.execute(sql, binds);
 
-        console.dir(results.rows)
+        // console.dir(results)
 
-        context = {results:results.rows};
+        
+        // 쿼리 오류날 시 err = -1
+        if(!results.rows.length) context.err = -1;
+        else{
+            context.err = 0;
+            context.result1 = results.rows
+        }
         
         res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 
+        console.log(context)
     } catch (err) {
         console.error(err);
     } finally {
@@ -346,6 +353,216 @@ app.post("/Search", async(req, res) => {
     })
 });
 
+app.get("/Search/ShowDetail", async(req, res) => {
+    let sql = "SELECT Title, summary FROM PAPER WHERE DOI = :DOI";
+    binds = [req.query.DOI];
+
+    let connection;
+    var context = {};
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        var results = await connection.execute(sql, binds);
+
+        console.log(results);
+        context.title = results.rows[0][0];
+        context.Summary = results.rows[0][1];
+
+        sql = "SELECT a.Name, a.r_number FROM AUTHOR a, WRITE w"
+        + " WHERE w.DOI = :DOI AND a.R_number = w.R_number";
+
+        results = await connection.execute(sql, binds);
+
+        console.log(results);
+        context.sql2 = results.rows;
+
+        sql = "SELECT j.Publisher, j.Name, j.Vol, j.Issue, TO_CHAR(j.Year, 'yyyy') FROM JOURNAL j, PAPER p"
+        + " WHERE p.DOI = :DOI AND p.J_number = j.J_number";
+
+        results = await connection.execute(sql, binds);
+        console.log(results);
+        context.publisher = results.rows[0][0];
+        context.jnum = results.rows[0][1];
+        context.vol = results.rows[0][2];
+        context.issue = results.rows[0][3];
+        context.year = results.rows[0][4];
+
+        console.log(results.rows[0][0]);
+        console.log(results.rows[0][1]);
+        console.log(results.rows[0][2]);
+        console.log(results.rows[0][3]);
+        console.log(results.rows[0][4]);
+
+        sql = "SELECT k.sub FROM KEYWORD k, HAS h WHERE h.doi = :DOI"
+            + " AND h.k_id = k.k_id";
+        results = await connection.execute(sql, binds);
+        console.log(results);
+        context.sql3 = results.rows;
+
+        sql = "SELECT f.middle FROM FIELD f, JOURNAL j, PAPER p"
+            + " WHERE p.DOI = :DOI AND p.J_number = j.J_number"
+            + " AND j.ddc = f.ddc";
+        results = await connection.execute(sql, binds);
+        console.log(results.rows[0][0]);
+
+        context.field = results.rows[0][0];
+
+        sql = "SELECT url FROM PAPER WHERE DOI = :DOI";
+        results = await connection.execute(sql, binds);
+        context.url = results.rows[0][0];
+        
+        console.log(results.rows[0][0]);
+
+        sql = "SELECT COUNT(*) FROM REFERENCE r WHERE r.ed_doi = :DOI";
+        results = await connection.execute(sql, binds);
+        console.log(results.rows[0][0]);
+
+        context.refered = results.rows[0][0];
+
+        /*
+        sql = "SELECT p.title FROM PAPER p, REFERENCE r"
+        + " WHERE r.ing_doi = :DOI"
+        + " AND p.doi = r.ed_doi"
+        + " ORDER BY p.title ASC";
+        results = await connection.execute(sql, binds);
+        console.log(results.rows);
+        */
+
+
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+    
+    // 비로그인 상태면 search1.ejs 화면
+    if(!LoginState)
+    {
+        context.id = "Anonymous";
+        context.LS = 0;
+    }
+    // 로그인 상태면 search1.ejs 화면 => MainID
+    else 
+    {
+        context.id = MainID;
+        context.LS = 1;
+    }
+
+    res.render(__dirname + '/views/search2', context, function(err,html){
+        res.end(html);
+    })
+});
+
+app.get("/Search/ShowAuthorDetail", async(req, res) => {
+    // console.log(req.query.RNUM);
+
+    let sql = "SELECT name, gender, nation, institution, address FROM AUTHOR"
+    + " WHERE R_number = :RNUM";
+    binds = [req.query.RNUM];
+
+    let connection;
+    var context = {};
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        var results = await connection.execute(sql, binds);
+
+        console.log(results.rows[0]);
+
+        context.name = results.rows[0][0];
+        context.sex = results.rows[0][1];
+        context.nation = results.rows[0][2];
+        context.inst = results.rows[0][3];
+        context.email = results.rows[0][4];
+
+        sql = "SELECT f.large, f.middle FROM MAJOR m, FIELD f"
+        + " WHERE m.r_number = :Rnum"
+        + " AND m.ddc = f.ddc";
+
+        results = await connection.execute(sql, binds);
+
+
+        context.major1 = results.rows[0][0];
+        
+        // 전공 하나만 있는 저자 존재
+        if(results.rows.length == 1)
+            context.major2 = null
+        else
+            context.major2 = results.rows[1][0];
+        console.log(context.major1);
+        console.log(context.major2);
+
+        sql = "SELECT k.sub FROM PAPER p, HAS h, KEYWORD k, WRITE w"
+        + " WHERE w.r_number = :Rnum"
+        + " AND w.doi = p.doi"
+        + " AND p.doi = h.doi"
+        + " AND h.k_id = k.k_id";
+
+        results = await connection.execute(sql, binds);
+        console.log(results.rows);
+
+        context.sql3 = results.rows;
+
+        sql = "SELECT COUNT(*) FROM AUTHOR a, WRITE w"
+        + " WHERE a.r_number = :Rnum"
+        + " AND a.r_number = w.r_number";
+
+        results = await connection.execute(sql, binds);
+        console.log(results.rows[0][0]);
+
+        context.papercount = results.rows[0][0];
+
+        sql = "SELECT p.title FROM PAPER p, AUTHOR a, WRITE w"
+        + " WHERE p.doi = w.doi"
+        + " AND a.r_number = w.r_number"
+        + " AND w.r_number = :Rnum";
+
+        results = await connection.execute(sql, binds);
+        console.log(results.rows);
+        context.sql5 = results.rows;
+
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+    
+    // 비로그인 상태면 search1.ejs 화면
+    if(!LoginState)
+    {
+        context.id = "Anonymous";
+        context.LS = 0;
+    }
+    // 로그인 상태면 search1.ejs 화면 => MainID
+    else 
+    {
+        context.id = MainID;
+        context.LS = 1;
+    }
+
+
+    res.render(__dirname + '/views/search3', context, function(err,html){
+        res.end(html);
+    })
+});
 
 //////////////////////////////////////////////////////////
 

@@ -89,55 +89,51 @@
 </body>
 <div class="container detail">
   <!-- <button type="button" class="btn btn-warning">BookMark</button> -->
-  <h2 class="mt-4 detail_title">저자 이름</h2>
+  <h2 class="mt-4 detail_title"><%= name%></h2>
+  <% if (LS == 0) { %>
+  <button type="button" class="btn btn-outline-warning bm_btn disabled">BookMark</button>
+  <% } else { %>
   <button type="button" class="btn btn-outline-warning bm_btn">BookMark</button>
+  <% } %> 
   <hr>
 
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">성별</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-9 themed-grid-col"><%= sex %></div>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">국가</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-9 themed-grid-col"><%= nation%></div>
   </div>
   <div class="row mb-3">
-    <div class="col-md-3 themed-grid-col row_name  text-center">주소</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-3 themed-grid-col row_name  text-center">연락처</div>
+    <div class="col-md-9 themed-grid-col"><%= email%></div>
   </div>
   <div class="row mb-3">
-    <div class="col-md-3 themed-grid-col row_name  text-center">소속 기간</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-3 themed-grid-col row_name  text-center">소속 기관</div>
+    <div class="col-md-9 themed-grid-col"><%=inst %></div>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">전공</div>
-    <div class="col-md-4 themed-grid-col">전공1</div>
-    <div class="col-md-5 themed-grid-col">전공2</div>
+    <div class="col-md-4 themed-grid-col"><%= major1 %></div>
+    <div class="col-md-5 themed-grid-col"><%= major2 %></div>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">키워드</div>
-    <div class="col-md-3 themed-grid-col">키워드1</div>
-    <div class="col-md-3 themed-grid-col">키워드2</div>
-    <div class="col-md-3 themed-grid-col">키워드3</div>
+    <% for(var i=0;i<sql3.length;++i){
+      var KEYWORD = sql3[i][0]; %>
+      <div class="col-md-1 themed-grid-col"><%= KEYWORD %></div>
+    <% } %>
   </div>
   <br>
 
-  <h4 id="Reference" class="row_name">저자가 쓴 논문(14)</h4>
+  <h4 id="Reference" class="row_name">저자가 쓴 논문 (<%=papercount%> 편)</h4>
   <div class="list-group">
-    <li class="list-group-item">child 1</li>
-    <li class="list-group-item">child 2</li>
-    <li class="list-group-item">child 3</li>
-    <li class="list-group-item">child 4</li>
-    <li class="list-group-item">child 5</li>
-    <li class="list-group-item">child 6</li>
-    <li class="list-group-item">child 7</li>
-    <li class="list-group-item">child 8</li>
-    <li class="list-group-item">child 9</li>
-    <li class="list-group-item">child 10</li>
-    <li class="list-group-item">child 11</li>
-    <li class="list-group-item">child 12</li>
-    <li class="list-group-item">child 13</li>
-    <li class="list-group-item">child 14</li>
+
+    <% for(var i=0;i<sql5.length;++i){
+      var PAPER = sql5[i][0]; %>
+      <li class="list-group-item"><%= PAPER %></li>
+    <% } %>
   </div>
 
 

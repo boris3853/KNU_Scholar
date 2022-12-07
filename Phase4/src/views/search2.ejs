@@ -89,61 +89,84 @@
 </body>
 <div class="detail container">
   <!-- <button type="button" class="btn btn-warning">BookMark</button> -->
-  <h2 class="mt-4 detail_title">논문 주제</h2>
+  <h2 class="mt-4 detail_title"><%= title %></h2>
+  <% if (LS == 0) { %>
+  <button type="button" class="btn btn-outline-warning bm_btn disabled">BookMark</button>
+  <% } else { %>
   <button type="button" class="btn btn-outline-warning bm_btn">BookMark</button>
+  <% } %>  
   <hr>
 
-  <div class="row mb-3">
-    <div class="col-md-3 themed-grid-col row_name  text-center">저자</div>
-    <div class="col-md-3 themed-grid-col">Author 1</div>
-    <div class="col-md-3 themed-grid-col">Author 2</div>
-    <div class="col-md-3 themed-grid-col">Author 3</div>
+  <div class="row xxl-3">
+    <div class="col-xl-3 themed-grid-col row_name text-center">저자</div>
+    <div class="col-xxl-9 themed-grid-col">
+      <form method="get" id="ShowAuthorDetail" action='/Search/ShowAuthorDetail'>
+        <input type="hidden" id="RNUM" name="RNUM" value=""/>
+      </form>
+      <% for(var i=0;i<sql2.length;++i){
+        var AUTHOR = sql2[i][0]; 
+        var RNUM = sql2[i][1]%>
+        <div>
+          <div id="<%=RNUM%>"></div>
+          <a href="#" form="ShowAuthorDetail" onclick="SUB(this)"><%= AUTHOR %></a>
+        </div>
+        <script>
+            function SUB(e)
+              {
+                // 공백을 생각해서 previousSibling 두번 필요
+                var num = e.previousSibling.previousSibling.id;
+                document.getElementById('RNUM').value=num;
+                document.getElementById('ShowAuthorDetail').submit();
+              }
+          </script> 
+      <% } %>
+    </div>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">발행 기관</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-md-3 themed-grid-col row_name  text-center">발행 기관</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-9 themed-grid-col"><%= publisher %></div>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">학술지 명</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-9 themed-grid-col"><%= jnum %></div>
   </div>
+  <% if(vol && issue) { %>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">권호 사항</div>
-    <div class="col-md-4 themed-grid-col">VOL</div>
-    <div class="col-md-5 themed-grid-col">NO</div>
+    <% if(vol) { %>
+    <div class="col-md-4 themed-grid-col">VOL <%= vol %></div>
+    <% } if(issue) { %>
+    <div class="col-md-5 themed-grid-col">ISSUE <%= issue %></div>
+    <% } %>
   </div>
+  <% } %>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">발행 년도</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-9 themed-grid-col"><%= year %></div>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">주제어</div>
-    <div class="col-md-3 themed-grid-col">키워드1</div>
-    <div class="col-md-3 themed-grid-col">키워드2</div>
-    <div class="col-md-3 themed-grid-col">키워드3</div>
+    <% for(var i=0;i<sql3.length;++i){
+      var KEYWORD = sql3[i][0]; %>
+      <div class="col-md-1 themed-grid-col"><%= KEYWORD %></div>
+    <% } %>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">논문 분야</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-9 themed-grid-col"><%= field %></div>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">URL</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-9 themed-grid-col"><%= url %></div>
   </div>
   <div class="row mb-3">
     <div class="col-md-3 themed-grid-col row_name  text-center">피인용횟수</div>
-    <div class="col-md-9 themed-grid-col">내용</div>
+    <div class="col-md-9 themed-grid-col"><%= refered %></div>
   </div>
   <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0"
     class="scrollspy-example position-relative mt-2 overflow-auto" tabindex="0">
     <h4 id="Summary" class="row_name">Summary</h4>
-    <p class="sum_content">This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate
-      navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example
-      copy here to emphasize the scrolling and highlighting.</p>
+    <p class="sum_content"><%= Summary %></p>
   </div>
   <h4 id="Reference" class="row_name">Reference</h4>
 
