@@ -1,3 +1,5 @@
+
+
 var oracledb = require('oracledb');
 var dbConfig = require('./config/dbConfig');
 var express = require('express');
@@ -5,6 +7,7 @@ var ejs = require('ejs')
 var asyncify = require('express-asyncify');
 var bodyParser = require('body-parser');
 var app = asyncify(express());
+
 // var router = express.Router();
 // var router = require('./router');
 
@@ -21,6 +24,8 @@ var PORT = process.env.PORT || 8000;
 
 oracledb.autoCommit = true;
 oracledb.fetchAsString = [ oracledb.CLOB ];
+
+// cytoscape.use(dagre);
 
 // 로그인 관련 Global 변수
 
@@ -532,6 +537,24 @@ app.get("/Search/ShowAuthorDetail", async(req, res) => {
         console.log(results.rows);
         context.sql5 = results.rows;
 
+
+        var cy = cytoscape({
+            container: document.getElementById('cy'),
+            elements: [
+              { data: { id: 'a' } },
+              { data: { id: 'b' } },
+              {
+                data: {
+                  id: 'ab',
+                  source: 'a',
+                  target: 'b'
+                }
+              }]
+          });
+
+        var layout = cy.layout({ name: 'circle' });
+        layout.run();
+          
     } catch (err) {
         console.error(err);
     } finally {
