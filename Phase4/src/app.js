@@ -267,11 +267,78 @@ app.get("/About", (req, res) => {
 //////////////////////////////////////////////////////////
 
 
-app.get("/Bookmark", (req, res) => {
+app.get("/Bookmark", async (req, res) => {
     // 비로그인 상태면 bookmark1_NL.ejs 화면
-    if(!LoginState) res.render(__dirname + '/views/bookmark1_NL', {id: "Anonymous", LS:0});
+    if (!LoginState) res.render(__dirname + '/views/bookmark1_NL', { id: "Anonymous", LS: 0 });
     // 로그인 상태면 bookmark1_L.ejs 화면
-    else res.render(__dirname + '/views/bookmark1_L', {id: MainID, LS:1});
+    else {
+        let connection;
+        var context;
+
+        try {
+            // Get a connection from the default pool
+            connection = await oracledb.getConnection('MainP');
+
+            //query1
+            let sql = 'SELECT k.sub, k.k_id FROM KEYWORD k, K_BOOKMARK b WHERE k.k_id = b.k_id AND b.id = :ID';
+            let binds = [
+                MainID
+            ];
+            var results = await connection.execute(sql, binds);
+            console.dir(results)
+            context = { keywords: results.rows };
+
+            sql = 'SELECT COUNT(*) FROM K_BOOKMARK WHERE id = :ID';
+            results = await connection.execute(sql, binds);
+            console.dir(results)
+            context.countK = results.rows[0][0];
+
+            //query2
+            sql = 'SELECT a.name, a.r_number FROM AUTHOR a, A_BOOKMARK b WHERE a.r_number = b.r_number AND b.id = :ID';
+            results = await connection.execute(sql, binds);
+            console.dir(results)
+            context.authors = results.rows;
+
+            sql = 'SELECT COUNT(*) FROM A_BOOKMARK WHERE id = :ID';
+            results = await connection.execute(sql, binds);
+            console.dir(results)
+            context.countA = results.rows[0][0];
+
+            //query3
+            sql = 'SELECT p.title, p.doi FROM PAPER p, P_BOOKMARK b WHERE p.doi = b.doi AND b.id = :ID';
+            results = await connection.execute(sql, binds);
+            console.dir(results)
+            context.papers = results.rows;
+
+            sql = 'SELECT COUNT(*) FROM P_BOOKMARK WHERE id = :ID';
+            results = await connection.execute(sql, binds);
+            console.dir(results)
+            context.countP = results.rows[0][0];
+
+            res.writeHead('200', { 'Content-Type': 'text/html;charset=utf8' });
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            if (connection) {
+                try {
+                    // Put the connection back in the pool
+                    await connection.close();
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+        }
+
+        // 로그인 상태임
+        context.id = MainID;
+        context.LS = 1;
+
+        res.render(__dirname + '/views/bookmark1_L', context, function (err, html) {
+            res.end(html);
+        });
+    }
+
 });
 
 
@@ -1236,9 +1303,10 @@ app.listen(PORT, () =>{
 
 
 //test
+/*
 app.get("/Post", (req, res) => {
     res.render(__dirname + '/views/bookmark1_L', {id: MainID});
 });
-
+*/
 
 
