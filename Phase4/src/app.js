@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 
 // app.use('/', router);
 app.use(express.static("public"))
+app.use("/public/js", express.static(__dirname + "/public/js"))
 
 app.set('view engine','ejs');
 
@@ -434,7 +435,7 @@ app.get("/Search/ShowDetail", async(req, res) => {
         results = await connection.execute(sql, binds);
         console.log(results.rows);
         */
-
+        context.doi = req.query.DOI;
 
     } catch (err) {
         console.error(err);
