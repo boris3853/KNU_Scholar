@@ -280,11 +280,70 @@ app.get("/Search", (req, res) => {
     else res.render(__dirname + '/views/search1', {id: MainID, LS:1});
 });
 
-app.post("/Search", (req, res) => {
+app.post("/Search", async(req, res) => {
     var sel_list = req.body.SEL;
     var content = req.body.CONT;
 
     console.log(sel_list + " " + content);
+
+    let sql;
+    if(sel_list === "논문 제목")
+        sql = "SELECT * FROM PAPER p WHERE p.title LIKE '%' || :CONTENT || '%'";
+    else if(sel_list === "저자 이름")
+        sql = "SELECT p.* FROM PAPER p, AUTHOR a, WRITE w WHERE a.name LIKE '%'"
+        + "|| :CONTENT || '%' AND p.doi = w.doi AND a.r_number = w.r_number";
+    else if(sel_list === "키워드")
+        sql = "SELECT p.* FROM PAPER p, KEYWORD k, HAS h + WHERE k.sub LIKE '%' ||" 
+        + "  :CONTENT || '%' AND p.doi = h.doi AND k.k_id = h.k_id";
+    
+    binds = [
+        content
+    ];
+
+    let connection;
+    var context;
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        var results = await connection.execute(sql, binds);
+
+        console.dir(results.rows)
+
+        context = {results:results.rows};
+        
+        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+
+    // 비로그인 상태면 search1.ejs 화면
+    if(!LoginState)
+    {
+        context.id = "Anonymous";
+        context.LS = 0;
+    }
+    // 로그인 상태면 search1.ejs 화면 => MainID
+    else 
+    {
+        context.id = MainID;
+        context.LS = 1;
+    }
+
+    res.render(__dirname + '/views/search1', context, function(err,html){
+        res.end(html);
+    })
 });
 
 

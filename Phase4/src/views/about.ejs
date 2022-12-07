@@ -67,53 +67,41 @@
                                     <% } %>
                         </form>
                     </li>
-
                     <li class="nav-item dropdown">
+                        <form method="get" name="NavPaperAdd" action='/PaperAdd/Paper'>
                         <% if (LS==0) { %>
-                            <a class="nav-link disabled" href="#" form="NavPaperAdd"
-                                onclick="javascript:document.NavPaperAdd.submit();">논문 추가</a>
+                            <a class="nav-link dropdown-toggle disabled" href="#" form="NavPaperAdd">논문 추가</a>
+                            <ul class="dropdown-menu"></ul>
                             <% } else { %>
                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                     aria-expanded="false">논문 추가</a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <form method="get" name="NavPaperAdd" action='/PaperAdd/Paper'>
-                                            <a class="dropdown-item" href="#" form="NavPaper"
-                                                onclick="javascript:document.NavNotice.submit();">논문</a>
+                                        <form method="get" name="NavPaperP" action='/PaperAdd/Paper'>
+                                            <a class="dropdown-item" href="#" form="NavPaperP"
+                                                onclick="javascript:document.NavPaperP.submit();">논문</a>
                                         </form>
                                     </li>
                                     <li>
-                                        <form method="get" name="NavFree" action='/PaperAdd/Author'>
-                                            <a class="dropdown-item" href="#" form="NavFree"
-                                                onclick="javascript:document.NavFree.submit();">저자</a>
+                                        <form method="get" name="NavPaperA" action='/PaperAdd/Author'>
+                                            <a class="dropdown-item" href="#" form="NavPaperA"
+                                                onclick="javascript:document.NavPaperA.submit();">저자</a>
                                         </form>
                                     </li>
                                     <li>
-                                        <form method="get" name="NavQNA" action='/PaperAdd/Journal'>
-                                            <a class="dropdown-item" href="#" form="NavQNA"
-                                                onclick="javascript:document.NavQNA.submit();">저널</a>
+                                        <form method="get" name="NavPaperJ" action='/PaperAdd/Journal'>
+                                            <a class="dropdown-item" href="#" form="NavPaperJ"
+                                                onclick="javascript:document.NavPaperJ.submit();">저널</a>
                                         </form>
                                     </li>
                                     <li>
-                                        <form method="get" name="NavQNA" action='/PaperAdd/Keyword'>
-                                            <a class="dropdown-item" href="#" form="NavQNA"
-                                                onclick="javascript:document.NavQNA.submit();">키워드</a>
+                                        <form method="get" name="NavPaperK" action='/PaperAdd/Keyword'>
+                                            <a class="dropdown-item" href="#" form="NavPaperK"
+                                                onclick="javascript:document.NavPaperK.submit();">키워드</a>
                                         </form>
                                     </li>
                                 </ul>
-                                <% } %>
-                    </li>
-
-                    <!--
-                    <li class="nav-item">
-                        <form method="get" name="NavPaperAdd" action='/PaperAdd/Paper'>
-                            <% if (LS==0) { %>
-                                <a class="nav-link disabled" href="#" form="NavPaperAdd"
-                                    onclick="javascript:document.NavPaperAdd.submit();">논문 추가</a>
-                                <% } else { %>
-                                    <a class="nav-link" href="#" form="NavPaperAdd"
-                                        onclick="javascript:document.NavPaperAdd.submit();">논문 추가</a>
-                                    <% } %>
+                            <% } %>
                         </form>
                     </li>
                     <li class="nav-item">
@@ -123,7 +111,6 @@
                         </form>
                     </li>
                 </ul>
-            -->
                     <h1 class="d-flex align-items-center fs-4 text-white mb-0">
                         <%= id %>
                     </h1>
