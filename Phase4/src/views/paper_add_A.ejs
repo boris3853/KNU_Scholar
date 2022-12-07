@@ -117,58 +117,62 @@
 </nav>
 
 
-  <div class="contents">
-    <p class="h1">Author</p>
-    <hr>
-    <div class="mb-3">
-      <label for="InputName" class="form-label">Name</label>
-      <input type="text" class="form-control" id="InputName">
-    </div>
-    <div class="mb-3">
-      <label for="InputInst" class="form-label">Institution</label>
-      <input type="text" class="form-control" id="InputInst">
-    </div>
-    <fieldset class="mb-3">
-      <label>Gender</label>
-      <div class="form-check">
-        <input type="radio" name="radios" class="form-check-input" id="exampleRadio1">
-        <label class="form-check-label" for="MaleRadio">Male</label>
-      </div>
-      <div class="mb-3 form-check">
-        <input type="radio" name="radios" class="form-check-input" id="exampleRadio2">
-        <label class="form-check-label" for="FemaleRadio">Female</label>
-      </div>
-    </fieldset>
-    <div class="mb-3">
-      <label for="InputNation" class="form-label">Nation</label>
-      <input type="text" class="form-control" id="InputNation">
-    </div>
-    <div class="mb-3">
-      <label for="InputAddr" class="form-label">Address</label>
-      <input type="text" class="form-control" id="InputAddr">
-    </div>
-    <div class="mb-3">
-      <label for="InputRnum" class="form-label">Rnumberx</label>
-      <input type="text" class="form-control" id="InputRnum">
-    </div>
 
-    <div class="mb-3">
-      <label for="DDCSelect" class="form-label">Major</label>
-      <select class="form-select" id="MajorSelect">
-        <option value="0">000</option>
-        <option value="1">100</option>
-        <option value="2">200</option>
-        <option value="3">300</option>
-        <option value="4">400</option>
-        <option value="5">500</option>
-        <option value="6">600</option>
-        <option value="7">700</option>
-        <option value="8">800</option>
-        <option value="9">900</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">저장</button>
-  </div>
+<div class="contents">
+    <p class="h1">Author</p>
+    <hr> 
+    <form method="post" id="AuthorAdd_Form">
+        <div class="mb-3">
+            <label for="InputName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="InputName" name="Aname" required>
+        </div>
+        <div class="mb-3">
+            <label for="InputInst" class="form-label">Institution</label>
+            <input type="text" class="form-control" id="InputInst" name="Ainst" required>
+        </div>
+        <fieldset class="mb-3">
+            <label>Gender</label>
+            <div class="form-check">
+                <input type="radio" name="radios" value="M" class="form-check-input" id="exampleRadio1" required>
+                <label class="form-check-label" for="MaleRadio">Male</label>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="radio" name="radios" value="F" class="form-check-input" id="exampleRadio2" required>
+                <label class="form-check-label" for="FemaleRadio">Female</label>
+            </div>
+        </fieldset>
+        <div class="mb-3">
+            <label for="InputNation" class="form-label">Nation</label>
+            <input type="text" class="form-control" id="InputNation" name="Anation" required>
+        </div>
+        <div class="mb-3">
+            <label for="InputAddr" class="form-label">Address</label>
+            <input type="text" class="form-control" id="InputAddr" name="Aaddr" required>
+        </div>
+        <div class="mb-3">
+            <label for="InputRnum" class="form-label">Rnumberx</label>
+            <input type="text" class="form-control" id="InputRnum" name="Arnum" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="DDCSelect" class="form-label">Major</label>
+            <select class="form-select" id="MajorSelect" name="Addc" required multiple>
+                <option value="0">000</option>
+                <option value="1">100</option>
+                <option value="2">200</option>
+                <option value="3">300</option>
+                <option value="4">400</option>
+                <option value="5">500</option>
+                <option value="6">600</option>
+                <option value="7">700</option>
+                <option value="8">800</option>
+                <option value="9">900</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" form="AuthorAdd_Form"
+        onclick="javascript: form.action='/PaperAdd/Author'">저장</button>
+    </form>
+</div>
 
   <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

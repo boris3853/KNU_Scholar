@@ -10,158 +10,200 @@
 <body>
   <nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Sixth navbar example">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">KKK팀 DB 플젝</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06"
-            aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+      <a class="navbar-brand" href="#">KKK팀 DB 플젝</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06"
+        aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div class="collapse navbar-collapse" id="navbarsExample06">
-            <ul class="navbar-nav me-auto mb-2 mb-xl-0">
-                <li class="nav-item">
-                    <form method="get" name="NavIntro" action='/About'>
-                        <a class="nav-link" href="#" form="NavIntro"
-                            onclick="javascript:document.NavIntro.submit();">소개</a>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <form method="get" name="NavSearch" action='/Search'>
-                        <a class="nav-link" href="#" form="NavSearch"
-                            onclick="javascript:document.NavSearch.submit();">검색</a>
-                    </form>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                        aria-expanded="false">게시물</a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <form method="get" name="NavNotice" action='/Article/Notice'>
-                                <a class="dropdown-item" href="#" form="NavNotice"
-                                    onclick="javascript:document.NavNotice.submit();">공지</a>
-                            </form>
-                        </li>
-                        <li>
-                            <form method="get" name="NavFree" action='/Article/Free'>
-                                <a class="dropdown-item" href="#" form="NavFree"
-                                    onclick="javascript:document.NavFree.submit();">자유글</a>
-                            </form>
-                        </li>
-                        <li>
-                            <form method="get" name="NavQNA" action='/Article/QNA'>
-                                <a class="dropdown-item" href="#" form="NavQNA"
-                                    onclick="javascript:document.NavQNA.submit();">QnA</a>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <form method="get" name="NavBook" action='/Bookmark'>
-                        <% if (LS==0) { %>
-                            <a class="nav-link disabled" href="#" form="NavBook"
-                                onclick="javascript:document.NavBook.submit();">북마크</a>
-                            <% } else { %>
-                                <a class="nav-link" href="#" form="NavBook"
-                                    onclick="javascript:document.NavBook.submit();">북마크</a>
-                                <% } %>
-                    </form>
-                </li>
-                <li class="nav-item dropdown">
-                    <% if (LS==0) { %>
-                        <a class="nav-link dropdown-toggle disabled" href="#" data-bs-toggle="dropdown" aria-expanded="false">논문 추가</a>
-                        <ul class="dropdown-menu"></ul>
-                    <% } else { %>
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                            aria-expanded="false">논문 추가</a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <form method="get" name="NavPaperP" action='/PaperAdd/Paper'>
-                                    <a class="dropdown-item" href="#" form="NavPaperP"
-                                        onclick="javascript:document.NavPaperP.submit();">논문</a>
-                                </form>
-                            </li>
-                            <li>
-                                <form method="get" name="NavPaperA" action='/PaperAdd/Author'>
-                                    <a class="dropdown-item" href="#" form="NavPaperA"
-                                        onclick="javascript:document.NavPaperA.submit();">저자</a>
-                                </form>
-                            </li>
-                            <li>
-                                <form method="get" name="NavPaperJ" action='/PaperAdd/Journal'>
-                                    <a class="dropdown-item" href="#" form="NavPaperJ"
-                                        onclick="javascript:document.NavPaperJ.submit();">저널</a>
-                                </form>
-                            </li>
-                            <li>
-                                <form method="get" name="NavPaperK" action='/PaperAdd/Keyword'>
-                                    <a class="dropdown-item" href="#" form="NavPaperK"
-                                        onclick="javascript:document.NavPaperK.submit();">키워드</a>
-                                </form>
-                            </li>
-                        </ul>
-                    <% } %>
-                </li>
-                <li class="nav-item">
-                    <form method="get" name="NavLogin" action='/Login'></form>
-                    <a class="nav-link" href="#" form="NavQNA"
-                        onclick="javascript:document.NavLogin.submit();">로그인</a>
-                    </form>
-                </li>
+      <div class="collapse navbar-collapse" id="navbarsExample06">
+        <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+          <li class="nav-item">
+            <form method="get" name="NavIntro" action='/About'>
+              <a class="nav-link" href="#" form="NavIntro" onclick="javascript:document.NavIntro.submit();">소개</a>
+            </form>
+          </li>
+          <li class="nav-item">
+            <form method="get" name="NavSearch" action='/Search'>
+              <a class="nav-link" href="#" form="NavSearch" onclick="javascript:document.NavSearch.submit();">검색</a>
+            </form>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">게시물</a>
+            <ul class="dropdown-menu">
+              <li>
+                <form method="get" name="NavNotice" action='/Article/Notice'>
+                  <a class="dropdown-item" href="#" form="NavNotice"
+                    onclick="javascript:document.NavNotice.submit();">공지</a>
+                </form>
+              </li>
+              <li>
+                <form method="get" name="NavFree" action='/Article/Free'>
+                  <a class="dropdown-item" href="#" form="NavFree"
+                    onclick="javascript:document.NavFree.submit();">자유글</a>
+                </form>
+              </li>
+              <li>
+                <form method="get" name="NavQNA" action='/Article/QNA'>
+                  <a class="dropdown-item" href="#" form="NavQNA" onclick="javascript:document.NavQNA.submit();">QnA</a>
+                </form>
+              </li>
             </ul>
-                <h1 class="d-flex align-items-center fs-4 text-white mb-0">
-                    <%= id %>
-                </h1>
-        </div>
+          </li>
+          <li class="nav-item">
+            <form method="get" name="NavBook" action='/Bookmark'>
+              <% if (LS==0) { %>
+                <a class="nav-link disabled" href="#" form="NavBook"
+                  onclick="javascript:document.NavBook.submit();">북마크</a>
+                <% } else { %>
+                  <a class="nav-link" href="#" form="NavBook" onclick="javascript:document.NavBook.submit();">북마크</a>
+                  <% } %>
+            </form>
+          </li>
+          <li class="nav-item dropdown">
+            <form method="get" name="NavPaperAdd" action='/PaperAdd/Paper'>
+              <% if (LS==0) { %>
+                <a class="nav-link dropdown-toggle disabled" href="#" form="NavPaperAdd">논문 추가</a>
+                <ul class="dropdown-menu"></ul>
+                <% } else { %>
+                  <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">논문 추가</a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <form method="get" name="NavPaperP" action='/PaperAdd/Paper'>
+                        <a class="dropdown-item" href="#" form="NavPaperP"
+                          onclick="javascript:document.NavPaperP.submit();">논문</a>
+                      </form>
+                    </li>
+                    <li>
+                      <form method="get" name="NavPaperA" action='/PaperAdd/Author'>
+                        <a class="dropdown-item" href="#" form="NavPaperA"
+                          onclick="javascript:document.NavPaperA.submit();">저자</a>
+                      </form>
+                    </li>
+                    <li>
+                      <form method="get" name="NavPaperJ" action='/PaperAdd/Journal'>
+                        <a class="dropdown-item" href="#" form="NavPaperJ"
+                          onclick="javascript:document.NavPaperJ.submit();">저널</a>
+                      </form>
+                    </li>
+                    <li>
+                      <form method="get" name="NavPaperK" action='/PaperAdd/Keyword'>
+                        <a class="dropdown-item" href="#" form="NavPaperK"
+                          onclick="javascript:document.NavPaperK.submit();">키워드</a>
+                      </form>
+                    </li>
+                  </ul>
+                  <% } %>
+            </form>
+          </li>
+          <li class="nav-item">
+            <form method="get" name="NavLogin" action='/Login'></form>
+            <a class="nav-link" href="#" form="NavQNA" onclick="javascript:document.NavLogin.submit();">로그인</a>
+            </form>
+          </li>
+        </ul>
+        <h1 class="d-flex align-items-center fs-4 text-white mb-0">
+          <%= id %>
+        </h1>
+      </div>
     </div>
-</nav>
+  </nav>
 
   <div style="width:60%; margin: auto;">
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
-          <h1 class="fw-light"><strong>ID님 북마크</strong></h1>
+          <h1 class="fw-light"><strong>
+              <%= id %>님 북마크
+            </strong></h1>
         </div>
       </div>
     </section>
 
-    <button class="btn btn-primary my-2" style="float:right; margin-left: 10px;">북마크 삭제</button>
-    <a href="#" class="btn btn-primary my-2" style="float:right;">키워드 추가</a>
+    <form action="" method="POST" id="DeleteBookMark">
+      <input type="hidden" name="DBMarray" id="DBMarray" />
+      <button class="btn btn-primary my-2" style="float:right; margin-left: 10px;" type="submit" id="btn_DBM"
+        form="DeleteBookMark" onclick="javascript: form.action='/BookMark/Delete'">북마크 삭제</button>
+      <form method="get" name="KeywordAdd" action='/BookMark/K_Add'>
+        <a href="#" class="btn btn-primary my-2" style="float:right" form="KeywordAdd"
+          onclick="javascript:document.KeywordAdd.submit();">키워드 추가</a>
+      </form>
 
-    <div class="list-group w-100">
-      <a href="#" class="list-group-item list-group-item-action active">
-        <i class="bi-house-fill"></i> Home
-      </a>
-      
-      <a href="#group-K#" class="list-group-item list-group-item-action">
-        <i class="bi-camera-fill"></i> Keyword
-        <span class="badge rounded-pill bg-primary float-end">45</span>
-      </a>
-      <div class="list-group collapse" id="group-K">
-        <a href="#" class="list-group-item">Keyword 1<input type="checkbox" value="ketword 1" name="keywords" style="float:right; margin:5px;"></a>
-        <a href="#" class="list-group-item">Keyword 2<input type="checkbox" value="ketword 2" name="keywords" style="float:right; margin:5px;"></a>
-        <a href="#" class="list-group-item">Keyword 3<input type="checkbox" value="ketword 3" name="keywords" style="float:right; margin:5px;"></a>
+      <div class="list-group w-100">
+        <a href="#" class="list-group-item list-group-item-action active">
+          <i class="bi-house-fill"></i> Home
+        </a>
+
+        <a href="#group-K#" class="list-group-item list-group-item-action">
+          <% var COUNT_K = countK;%>
+          <i class="bi-camera-fill"></i> Keyword
+          <span class="badge rounded-pill bg-primary float-end"><%=COUNT_K%></span>
+        </a>
+        <div class="list-group" id="group-K">
+          <% for(var i=0;i<keywords.length;++i){ 
+            var SUB = keywords[i][0]; 
+            var KID = keywords[i][1];%>
+
+            <a href="#" class="list-group-item">
+            <input type="checkbox" value="<%=KID%>" name="KeywordS" style="float:left; margin:5px;"
+              onclick='getCheckboxValue()'/> <%=SUB%>
+            </a> 
+            <% } %>
+        </div>
+
+        <a href="#group-A" class="list-group-item list-group-item-action">
+          <% var COUNT_A = countA;%>
+          <i class="bi-music-note-beamed"></i> Author
+          <span class="badge rounded-pill bg-primary float-end"><%=COUNT_A%></span>
+        </a>
+        <div class="list-group" id="group-A">
+          <% for(var i=0;i<authors.length;++i){
+            var NAME = authors[i][0];
+            var RNUMBER = authors[i][1];%>
+
+          <a href="#" class="list-group-item">
+            <input type="checkbox" value="<%=RNUMBER%>" name="AuthorS" style="float:left; margin:5px;"
+            onclick='getCheckboxValue()'/> <%=NAME%>
+          </a> 
+          <% } %>
+        </div>
+
+        <a href="#group-P" class="list-group-item list-group-item-action">
+          <% var COUNT_P = countP;%>
+          <i class="bi-film"></i> Paper
+          <span class="badge rounded-pill bg-primary float-end"><%=COUNT_P%></span>
+        </a>
+        <div class="list-group" id="group-P">
+          <% for(var i=0;i<papers.length;++i){
+            var TITLE = papers[i][0];
+            var DOI = papers[i][1];%>
+
+          <a href="#" class="list-group-item">
+            <input type="checkbox" value="<%=DOI%>" name="PaperS" style="float:left; margin:5px;"
+            onclick='getCheckboxValue()'/> <%=TITLE%>
+          </a> 
+          <% } %>
+        </div>
+
       </div>
-      
-      <a href="#group-A" class="list-group-item list-group-item-action">
-        <i class="bi-music-note-beamed"></i> Author
-        <span class="badge rounded-pill bg-primary float-end">50</span>
-      </a>
-      <div class="list-group collapse" id="group-A">
-        <a href="#" class="list-group-item">Author 1</a>
-        <a href="#" class="list-group-item">Author 2</a>
-        <a href="#" class="list-group-item">Author 3</a>
-      </div>
-      
-      <a href="#group-P" class="list-group-item list-group-item-action">
-        <i class="bi-film"></i> Paper
-        <span class="badge rounded-pill bg-primary float-end">202</span>
-      </a>
-      <div class="list-group collapse" id="group-P">
-        <a href="#" class="list-group-item">Paper 1</a>
-        <a href="#" class="list-group-item">Paper 2</a>
-        <a href="#" class="list-group-item">Paper 3</a>
-      </div>
-    
-    </div>
+      <script>
+        function getCheckboxValue() {
+          // 선택된 목록 가져오기
+          const query = 'input[name="keywords"]:checked';
+          const selectedKeywords =
+            document.querySelectorAll(query);
+
+          // 선택된 목록에서 value 찾기
+          let result = '';
+          selectedKeywords.forEach((el) => {
+            result += el.value + ' ';
+          });
+
+          // 출력
+          document.getElementById('DBMarray').value = result;
+        }
+      </script>
+    </form>
   </div>
 
   <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
