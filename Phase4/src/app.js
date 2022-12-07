@@ -1261,36 +1261,339 @@ app.get("/Article/Delete", async(req, res) => {
 
 
 //////////////////////////////////////////////////////////
-
 app.get("/PaperAdd/Paper", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
+    if (!LoginState) res.render(__dirname + '/views/paper_add_UATH', { id: "Anonymous", LS: 0 });
     // 로그인 상태면 paper_add_P.ejs
-    else res.render(__dirname + '/views/paper_add_P', {id: MainID, LS:1});
+    else res.render(__dirname + '/views/paper_add_P', { id: MainID, LS: 1 });
 });
+
+
+app.post("/PaperAdd/Paper", async (req, res) => {
+    // Ptitle, Psummary, Purl, Pdoi, Pjnumber, Prnumber, Pkeyword, Prdoi
+    var p_title = req.body.Ptitle;
+    var p_summary = req.body.Psummary;
+    var p_url = req.body.Purl;
+    var p_doi = Number(req.body.Pdoi);
+    var p_jnumber = Number(req.body.Pjnumber);
+    var p_rnumber = req.body.Prnumber;
+    var p_kid = req.body.Pkeyword;
+    var p_r_doi = req.body.Prdoi;
+    console.log(p_title, p_summary, p_url, p_doi, p_jnumber, p_rnumber, p_kid, p_r_doi);
+
+    var r_nums = p_rnumber.split('#');
+    var k_ids = p_kid.split('#');
+    var p_dois = p_r_doi.split('#');
+    console.log(r_nums);
+
+    let sql;
+
+    sql = "select count(*) from ((select doi from paper where doi=:DOI) union (select doi from paper where url=:URL))";
+    binds = [p_doi, p_url];
+
+    let connection;
+    var context = {};
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        // kid 중복 검사
+        var results = await connection.execute(sql, binds);
+        // 쿼리 오류날 시 err = -1
+        if (!results.rows.length) context.err = -1;
+        else {
+            context.err = 0;
+            context.result1 = results.rows
+        }
+        var a_result = results.rows[0][0];
+        console.log(a_result);
+
+        if (!a_result) {
+            // title, summary, url, doi, j_number
+            sql = " insert into paper values(:T, to_clob(:S), :U, :D, :J)";
+            binds = [p_title, p_summary, p_url, p_doi, p_jnumber];
+            await connection.execute(sql, binds);
+            console.log("Added Paper : " + p_doi);
+            // r_nums, k_ids, p_dois
+            for (let i = 0; i < r_nums.length; i++) {
+                r_nums[i] = Number(r_nums[i]);
+                sql = "select count(*) from author where r_number=:RN"; binds = [r_nums[i]]; results = await connection.execute(sql, binds);
+                var temp1 = results.rows[0][0];
+                if (!temp1) continue;
+                console.log(temp1);
+                sql = "insert into write values(:WDOI, :WRNUM)";
+                binds = [p_doi, r_nums[i]];
+                await connection.execute(sql, binds);
+            }
+            for (let i = 0; i < k_ids.length; i++) {
+                k_ids[i] = Number(k_ids[i]);
+                sql = "select count(*) from keyword where k_id=:KI"; binds = [k_ids[i]]; results = await connection.execute(sql, binds);
+                var temp2 = results.rows[0][0];
+                if (!temp2) continue;
+                sql = "insert into has values(:HDOI, :HKID)";
+                binds = [p_doi, k_ids[i]];
+                await connection.execute(sql, binds);
+            }
+            for (let i = 0; i < p_dois.length; i++) {
+                p_dois[i] = Number(p_dois[i]);
+                sql = "select count(doi) from paper where doi=:PD"; binds = [p_dois[i]]; results = await connection.execute(sql, binds);
+                var temp3 = results.rows[0][0];
+                if (!temp3) continue;
+                sql = "insert into reference values(:RINGDOI, :REDDOI)";
+                binds = [p_doi, p_dois[i]];
+                await connection.execute(sql, binds);
+            }
+        }
+        else {
+            console.log("Paper Already exists...");
+        }
+
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        // 비로그인 상태면 paper_add_UATH
+        if (!LoginState) res.render(__dirname + '/views/paper_add_UATH', { id: "Anonymous", LS: 0 });
+        // 로그인 상태면 paper_add_P.ejs
+        else res.render(__dirname + '/views/paper_add_P', { id: MainID, LS: 1 });
+    }
+});
+
+
 
 app.get("/PaperAdd/Author", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
+    if (!LoginState) res.render(__dirname + '/views/paper_add_UATH', { id: "Anonymous", LS: 0 });
     // 로그인 상태면 paper_add_A.ejs
-    else res.render(__dirname + '/views/paper_add_A', {id: MainID, LS:1});
+    else res.render(__dirname + '/views/paper_add_A', { id: MainID, LS: 1 });
 });
+
+app.post("/PaperAdd/Author", async (req, res) => {
+    // Aname, Ainst, radios, Anation, Aaddr, Arnum, Addc
+    var a_name = req.body.Aname;
+    var a_inst = req.body.Ainst;
+    var a_gender = req.body.radios;
+    var a_nation = req.body.Anation;
+    var a_addr = req.body.Aaddr;
+    var a_rnum = Number(req.body.Arnum);
+    var a_ddc = req.body.Addc;
+    console.log(a_name, a_inst, a_gender, a_nation, a_addr, a_rnum, a_ddc);
+
+    let sql;
+
+    sql = "select count(*) from ((select * from author where r_number = :ARNUMBER) union (select * from author where address = :AADDRESS))";
+    binds = [a_rnum, a_addr];
+
+    let connection;
+    var context = {};
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        // kid 중복 검사
+        var results = await connection.execute(sql, binds);
+        // 쿼리 오류날 시 err = -1
+        if (!results.rows.length) context.err = -1;
+        else {
+            context.err = 0;
+            context.result1 = results.rows
+        }
+        var a_result = results.rows[0][0];
+        console.log(a_result);
+
+        if (!a_result) {
+            sql = "insert into author values(:ANAME, :AINST, :AGENDER, :ANATION, :AADDR, :ARNUM)";
+            binds = [a_name, a_inst, a_gender, a_nation, a_addr, a_rnum];
+            await connection.execute(sql, binds);
+            console.log("Added Author : " + a_rnum);
+
+            for (let i = 0; i < a_ddc.length; i++) {
+                sql = "insert into major values(:RNUM, :MDDC)";
+                binds = [a_rnum, Number(a_ddc[i])*100];
+                await connection.execute(sql, binds);
+                console.log("Added Major : " + a_rnum + " " + a_ddc[i]);
+            }
+        }
+        else {
+            console.log("Author Already exists...");
+        }
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // 비로그인 상태면 paper_add_UATH
+        if (!LoginState) res.render(__dirname + '/views/paper_add_UATH', { id: "Anonymous", LS: 0 });
+        // 로그인 상태면 paper_add_A.ejs
+        else res.render(__dirname + '/views/paper_add_A', { id: MainID, LS: 1 });
+    }
+
+});
+
+
+
 
 app.get("/PaperAdd/Journal", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
+    if (!LoginState) res.render(__dirname + '/views/paper_add_UATH', { id: "Anonymous", LS: 0 });
     // 로그인 상태면 paper_add_J.ejs
-    else res.render(__dirname + '/views/paper_add_J', {id: MainID, LS:1});
+    else res.render(__dirname + '/views/paper_add_J', { id: MainID, LS: 1 });
 });
+
+app.post("/PaperAdd/Journal", async (req, res) => {
+    var j_name = req.body.Jname;
+    var j_vol = Number(req.body.Jvol);
+    var j_issue = Number(req.body.Jissue);
+    var j_publisher = req.body.Jpublisher;
+    var j_ddc = Number(req.body.Jddc) * 100;
+    var j_number = Number(req.body.Jnumber);
+    var j_year = req.body.Jyear;
+    console.log(j_name + j_vol + j_issue + j_publisher + j_ddc + j_number + j_year);
+
+    let sql;
+
+    sql = "select count(*) from ((select * from journal where j_number = :JNUM) union (select * from journal where name = :JNAME and vol = :JVOL and issue = :JISSUE and publisher =:JPUB and ddc = :JDDC and to_char(year,'yyyy')=:JYEAR))";
+    binds = [j_number, j_name, j_vol, j_issue, j_publisher, j_ddc, j_year];
+
+    let connection;
+    var context = {};
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        // kid 중복 검사
+        var results = await connection.execute(sql, binds);
+        // 쿼리 오류날 시 err = -1
+        if (!results.rows.length) context.err = -1;
+        else {
+            context.err = 0;
+            context.result1 = results.rows
+        }
+        var j_result = results.rows[0][0];
+
+        if (!j_result) {
+            sql = "insert into journal values(:JNAME, :JVOL, :JISSUE, :JPUB, :JDDC, :JNUM, to_date(:JYEAR, 'yyyy'))";
+            binds = [j_name, j_vol, j_issue, j_publisher, j_ddc, j_number, j_year];
+            if (j_vol == 0) binds[1] = null;
+            if (j_issue == 0) binds[2] = null;
+            await connection.execute(sql, binds);
+            console.log("Added Journal : " + j_number);
+        }
+        else {
+            console.log("Journal Already exists...");
+        }
+
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        // 비로그인 상태면 paper_add_UATH
+        if (!LoginState) res.render(__dirname + '/views/paper_add_UATH', { id: "Anonymous", LS: 0 });
+        // 로그인 상태면 paper_add_J.ejs
+        else res.render(__dirname + '/views/paper_add_J', { id: MainID, LS: 1 });
+    }
+});
+
 
 
 app.get("/PaperAdd/Keyword", (req, res) => {
     // 비로그인 상태면 paper_add_UATH
-    if(!LoginState) res.render(__dirname + '/views/paper_add_UATH', {id: "Anonymous", LS:0});
+    if (!LoginState) res.render(__dirname + '/views/paper_add_UATH', { id: "Anonymous", LS: 0 });
     // 로그인 상태면 paper_add_K.ejs
-    else res.render(__dirname + '/views/paper_add_K', {id: MainID, LS:1});
+    else res.render(__dirname + '/views/paper_add_K', { id: MainID, LS: 1 });
 });
 
+app.post("/PaperAdd/Keyword", async (req, res) => {
+    var k_id = req.body.K_ID;
+    var k_sub = req.body.K_SUB;
+    var k_ddc = req.body.K_DDC;
+    k_ddc = Number(k_ddc) * 100;
+    console.log(k_id + k_sub + k_ddc);
+
+    let sql;
+
+    sql = "select count(*) from keyword where k_id = :KID";
+    binds = [k_id];
+
+    let connection;
+    var context = {};
+
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection('MainP');
+
+        // kid 중복 검사
+        var results = await connection.execute(sql, binds);
+        // 쿼리 오류날 시 err = -1
+        if (!results.rows.length) context.err = -1;
+        else {
+            context.err = 0;
+            context.result1 = results.rows
+        }
+        var k_result = results.rows[0][0];
+
+        // sub + ddc 중복 검사
+        sql = "select count(*) from keyword where sub = :KSUB and ddc = :KDDC";
+        binds = [k_sub, k_ddc];
+        results = await connection.execute(sql, binds);
+        // 쿼리 오류날 시 err = -1
+        if (!results.rows.length) context.err = -1;
+        else {
+            context.err = 0;
+            context.result1 = results.rows
+        }
+        if (!k_result) { k_result = results.rows[0][0]; }
+        console.log(k_result);
+
+        if (!k_result) { // keyword not already exists -> can insert
+            sql = "insert into keyword(sub, k_id, ddc) values(:KSUB,:KID,:KDDC)";
+            binds = [k_sub, k_id, k_ddc];
+            await connection.execute(sql, binds);
+            console.log("Added Keyword : " + k_id);
+        }
+        else console.log("Keyword Already exists...");
+
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        // 비로그인 상태면 paper_add_UATH
+        if (!LoginState) res.render(__dirname + '/views/paper_add_UATH', { id: "Anonymous", LS: 0 });
+        // 로그인 상태면 paper_add_K.ejs
+        else res.render(__dirname + '/views/paper_add_K', { id: MainID, LS: 1 });
+    }
+});
 
 
 // listen 8000 port
